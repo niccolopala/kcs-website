@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import FaqList from '../components/FaqList.astro';
+import BookingCard from '../components/BookingCard.astro';
+import { allFaqs } from '../data/faq';
+import { covePrices } from '../data/pricing';
+
+const faqs = allFaqs.filter((f) => f.cove);
+
+const specs = [
+  ['Cove size', 'Approximately 4.5m × 4.0m'],
+  ['Capacity', 'Up to 10 people, 4–5 is most comfortable'],
+  ['Power', 'Four 230V sockets, floor and ceiling'],
+  ['On-site team', 'A member of our team is there throughout'],
+  ['Lights and backdrops', 'Bring your own, or hire ours'],
+  ['Parking', 'Plenty of parking on site'],
+];
+---
+
+<Base
+  title="White Infinity Cove Hire in Kent | Kent Content Studios"
+  description="White infinity cove for dry hire in Cranbrook, Kent. 4.5m × 4.0m cove for product, fashion and talking-head shoots, from £40/hr + VAT."
+  current="/infinity-room"
+>
+  <div class="container-kcs pt-5 text-[13px] text-muted">
+    <a href="/" class="text-muted hover:text-white">Home</a> / Studios / White Infinity Room
+  </div>
+
+  <section class="container-kcs grid gap-3 pb-16 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+    <MediaPlaceholder label="Wide shot of the cove, lit" class="h-72 sm:col-span-2 md:h-[460px] lg:col-span-4" />
+    <MediaPlaceholder label="Product shoot example" class="h-40" />
+    <MediaPlaceholder label="Talking-head example" class="h-40" />
+    <MediaPlaceholder label="Fashion example" class="h-40" />
+    <MediaPlaceholder label="Behind the scenes" class="h-40" />
+  </section>
+
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid items-start gap-12 py-20 md:py-24 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div class="flex min-w-0 flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h1 class="heading-display text-7xl md:text-[88px]">White Infinity <span class="text-red">Room.</span></h1>
+          <p class="max-w-2xl text-lg leading-relaxed text-subtle">
+            A clean, edge-free white cove for product, fashion, e-commerce and talking-head content. Dry hire: bring
+            your crew and kit, or add our lights and backdrops.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">The space</h2>
+          <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {
+              specs.map(([t, b]) => (
+                <div class="flex flex-col gap-1.5 rounded-lg border border-card-line bg-white p-5">
+                  <strong>{t}</strong>
+                  <span class="text-sm text-subtle">{b}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Pricing</h2>
+          <div class="grid gap-3 sm:grid-cols-3">
+            {
+              covePrices.map((c) => (
+                <div class="flex flex-col gap-1.5 rounded-lg border border-card-line bg-white p-5">
+                  <span class="text-[13px] text-subtle">
+                    {c.label} · {c.note}
+                  </span>
+                  <span class="heading-display text-5xl">{c.price}</span>
+                </div>
+              ))
+            }
+          </div>
+          <p class="text-[13px] text-subtle">
+            Dry hire, no equipment included. Lights and paper backdrops available for a small rental charge. All
+            prices ex VAT. Evenings +20%, weekends +30%, by arrangement.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Good to know</h2>
+          <FaqList items={faqs} tone="light" />
+          <a href="/faq" class="self-start text-sm font-semibold uppercase tracking-wide text-red hover:text-ink"
+            >See all FAQs →</a
+          >
+        </div>
+      </div>
+
+      <BookingCard
+        from="£40"
+        unit="/ hour + VAT"
+        note="2 hour minimum. Half day £140, full day £270."
+        points={['Team on site throughout', 'Bring your own crew and kit', 'Lights and backdrops to hire']}
+      />
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-panel">
+    <div class="container-kcs flex flex-col gap-6 py-20">
+      <h2 class="heading-display text-5xl">Make a day of <span class="text-red">it.</span></h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <a href="/podcast-studio" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+          <strong class="heading-display text-[28px]">Podcast Studio</strong>
+          <span class="text-muted">Record the conversation, then shoot promos in the cove.</span>
+        </a>
+        <a href="/kitchen-studio" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+          <strong class="heading-display text-[28px]">Kitchen Studio</strong>
+          <span class="text-muted">Coming soon: a full kitchen set for food and product content.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+interface Props {
+  from: string;
+  unit: string;
+  note?: string;
+  points: string[];
+}
+const { from, unit, note, points } = Astro.props;
+---
+
+<!-- TODO: once Cal.com is set up, embed the booking widget here or point the button at the Cal.com event. -->
+<aside
+  id="book"
+  class="flex scroll-mt-24 flex-col gap-5 rounded-lg border-t-[3px] border-red bg-ink p-7 text-white lg:sticky lg:top-24"
+>
+  <div class="flex flex-col gap-1.5">
+    <span class="text-[13px] text-muted">From</span>
+    <span class="heading-display text-[64px]">
+      {from}<span class="font-sans text-sm text-muted"> {unit}</span>
+    </span>
+    {note && <p class="text-sm leading-relaxed text-soft">{note}</p>}
+  </div>
+  <ul class="space-y-2 border-t border-line-strong pt-4 text-sm text-soft">
+    {
+      points.map((p) => (
+        <li class="flex gap-2.5">
+          <span class="text-red-bright" aria-hidden="true">
+            ✓
+          </span>
+          {p}
+        </li>
+      ))
+    }
+  </ul>
+  <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Reserve with 50% deposit</a>
+  <p class="text-center text-[13px] leading-relaxed text-muted">
+    Balance due 48 hours before your session.<br />One free reschedule with 48 hours' notice.
+  </p>
+  <a href="/contact" class="text-center text-sm text-red-bright hover:text-white">Or book a free tour first</a>
+</aside>

@@ -1,0 +1,37 @@
+---
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-ink">
+  <div class="container-kcs grid gap-10 py-14 text-sm text-muted sm:grid-cols-2 lg:grid-cols-4">
+    <div class="flex flex-col gap-3">
+      <img src="/logo.svg" alt={site.name} width="155" height="48" class="h-12 w-auto self-start" loading="lazy" />
+      <address class="not-italic leading-relaxed">
+        {site.address.line1}<br />
+        {site.address.line2}, {site.address.town}<br />
+        {site.address.county} {site.address.postcode}
+      </address>
+      <span>{site.hours}</span>
+    </div>
+    <div class="flex flex-col gap-2">
+      <strong class="text-white">Studios</strong>
+      <a href="/podcast-studio" class="text-muted hover:text-white">Podcast Studio</a>
+      <a href="/infinity-room" class="text-muted hover:text-white">White Infinity Room</a>
+      <a href="/kitchen-studio" class="text-muted hover:text-white">Kitchen Studio (coming soon)</a>
+    </div>
+    <div class="flex flex-col gap-2">
+      <strong class="text-white">Get in touch</strong>
+      <a href={`mailto:${site.email}`} class="text-muted hover:text-white">{site.email}</a>
+      <a href={site.instagram} class="text-muted hover:text-white" rel="noopener" target="_blank">{site.instagramHandle}</a>
+      <a href="/faq" class="text-muted hover:text-white">FAQ</a>
+    </div>
+    <div class="flex flex-col gap-2">
+      <strong class="text-white">{site.podcastName} Podcast</strong>
+      <span>Our own show, recorded right here in the studio.</span>
+    </div>
+  </div>
+  <div class="container-kcs border-t border-line py-6 text-xs text-muted">
+    © {year} {site.name}. All prices exclude VAT.
+  </div>
+</footer>

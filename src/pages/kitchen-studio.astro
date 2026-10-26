@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import InterestForm from '../components/InterestForm.astro';
+---
+
+<Base
+  title="Kitchen Studio, Coming Soon | Kent Content Studios"
+  description="A kitchen studio for food and product content is coming to Kent Content Studios in Cranbrook. Register your interest to hear first when it opens."
+  current="/kitchen-studio"
+>
+  <section style="background-image: radial-gradient(800px 420px at 50% 0%, rgba(192,40,30,0.12), transparent 70%)">
+    <div class="container-kcs grid items-center gap-12 py-20 md:grid-cols-2 md:py-28">
+      <div class="flex flex-col gap-5">
+        <span class="self-start rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider">COMING SOON</span>
+        <h1 class="heading-display text-7xl md:text-[96px]">Kitchen <span class="text-red">Studio.</span></h1>
+        <p class="max-w-xl text-lg leading-relaxed text-muted">
+          A dedicated kitchen set for food brands, recipe content and product demos is being built now. Book it as
+          dry hire, or have our food videographer shoot it for you.
+        </p>
+        <p class="text-muted">Register your interest and you'll be the first to hear when it opens, along with pricing.</p>
+      </div>
+      <MediaPlaceholder label="Build-in-progress shot or render" class="h-80 md:h-[420px]" />
+    </div>
+  </section>
+
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid gap-10 py-20 md:grid-cols-[1fr_1.2fr] md:py-24">
+      <h2 class="heading-display text-5xl md:text-6xl">Be first <span class="text-red">in.</span></h2>
+      <InterestForm name="kitchen-interest" topic="Kitchen Studio" tone="light" submitLabel="Register interest" />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,48 @@
+---
+// Netlify Forms: submissions appear in the Netlify dashboard under Forms.
+// The form must exist in the static HTML at build time for Netlify to detect it.
+interface Props {
+  name: string;
+  topic?: string;
+  showMessage?: boolean;
+  submitLabel?: string;
+  tone?: 'dark' | 'light';
+}
+const { name, topic, showMessage = true, submitLabel = 'Send', tone = 'dark' } = Astro.props;
+const field =
+  tone === 'dark'
+    ? 'rounded-lg border border-[#333] bg-panel px-4 py-3 text-white placeholder:text-muted'
+    : 'rounded-lg border border-card-line bg-white px-4 py-3 text-ink placeholder:text-[#777]';
+const labelCls = tone === 'dark' ? 'text-sm font-semibold' : 'text-sm font-semibold text-ink';
+---
+
+<form name={name} method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company-website" class="flex flex-col gap-4">
+  <input type="hidden" name="form-name" value={name} />
+  <p class="hidden">
+    <label>Leave this empty <input name="company-website" /></label>
+  </p>
+  {topic && <input type="hidden" name="topic" value={topic} />}
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class="flex flex-col gap-2">
+      <span class={labelCls}>Name</span>
+      <input class={field} type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="flex flex-col gap-2">
+      <span class={labelCls}>Email</span>
+      <input class={field} type="email" name="email" autocomplete="email" required />
+    </label>
+  </div>
+  <label class="flex flex-col gap-2">
+    <span class={labelCls}>Company <span class="font-normal opacity-70">(optional)</span></span>
+    <input class={field} type="text" name="company" autocomplete="organization" />
+  </label>
+  {
+    showMessage && (
+      <label class="flex flex-col gap-2">
+        <span class={labelCls}>What are you looking to make?</span>
+        <textarea class={field} name="message" rows="5" />
+      </label>
+    )
+  }
+  <button type="submit" class="btn self-start bg-red text-white hover:bg-red-bright">{submitLabel}</button>
+</form>

@@ -1,0 +1,60 @@
+---
+import { nav, site } from '../data/site';
+interface Props {
+  current?: string;
+}
+const { current } = Astro.props;
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-ink/95 backdrop-blur">
+  <div class="container-kcs flex items-center justify-between gap-4 py-3">
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${site.name} home`}>
+      <img src="/logo.svg" alt={site.name} width="171" height="53" class="h-12 w-auto md:h-14" />
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-6 text-sm font-medium lg:flex">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={current === item.href ? 'page' : undefined}
+            class:list={[
+              'no-underline transition-colors hover:text-red-bright',
+              current === item.href ? 'text-red-bright' : 'text-white',
+            ]}
+          >
+            {item.label}
+            {item.soon && <span class="ml-1 text-xs text-muted">(soon)</span>}
+          </a>
+        ))
+      }
+      <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Check availability</a>
+    </nav>
+
+    <details class="group relative lg:hidden">
+      <summary
+        class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border border-line-strong"
+        aria-label="Open menu"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path class="group-open:hidden" d="M3 6h18M3 12h18M3 18h18"></path>
+          <path class="hidden group-open:block" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </summary>
+      <nav
+        aria-label="Mobile"
+        class="absolute right-0 top-14 flex w-[min(86vw,320px)] flex-col gap-1 rounded-lg border border-line-strong bg-panel p-3 shadow-2xl"
+      >
+        {
+          nav.map((item) => (
+            <a href={item.href} class="rounded-md px-3 py-3 text-base text-white no-underline hover:bg-raised">
+              {item.label}
+              {item.soon && <span class="ml-1 text-xs text-muted">(soon)</span>}
+            </a>
+          ))
+        }
+        <a href={site.bookingUrl} class="btn mt-2 bg-red text-white hover:bg-red-bright">Check availability</a>
+      </nav>
+    </details>
+  </div>
+</header>

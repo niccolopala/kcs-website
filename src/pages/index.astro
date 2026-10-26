@@ -1,0 +1,340 @@
+---
+import Base from '../layouts/Base.astro';
+import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, driveTimes } from '../data/site';
+import { allFaqs } from '../data/faq';
+import { podcastPlans, podcastExtras, covePrices } from '../data/pricing';
+
+const homeFaqs = allFaqs.filter((f) => f.home);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  description: 'Podcast studio and white infinity cove for hire in Cranbrook, Kent.',
+  url: 'https://kentcontentstudios.com',
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.line1}, ${site.address.line2}`,
+    addressLocality: site.address.town,
+    addressRegion: site.address.county,
+    postalCode: site.address.postcode,
+    addressCountry: 'GB',
+  },
+  openingHours: 'Mo-Fr 09:00-18:00',
+};
+
+const studios = [
+  {
+    name: 'Podcast Studio',
+    href: '/podcast-studio',
+    media: 'Hover-to-play clip: podcast set',
+    body: 'Up to 4 guests across 3 sets. 3 × Sony FX30, pro lighting, an engineer runs it all.',
+    bestFor: 'Video podcasts, interviews, founder content',
+    price: 'From £295 + VAT / session',
+    link: 'View studio',
+  },
+  {
+    name: 'White Infinity Room',
+    href: '/infinity-room',
+    media: 'Hover-to-play clip: infinity cove',
+    body: '4.5m × 4.0m cove, up to 10 people. Dry hire: bring your own lights, or hire ours.',
+    bestFor: 'Product, fashion, e-commerce, talking heads',
+    price: 'From £40/hr · 2 hr min',
+    link: 'View studio',
+  },
+  {
+    name: 'Kitchen Studio',
+    href: '/kitchen-studio',
+    media: 'Build-in-progress shot',
+    soon: true,
+    body: "Our kitchen studio is being built now. Register interest and you'll be first to know when it opens.",
+    bestFor: 'Food brands, recipe content, product demos',
+    price: 'Opening soon',
+    link: 'Register interest',
+  },
+];
+
+const steps = [
+  { n: '01', t: 'Pick a slot', b: 'Live calendar. A 50% deposit secures your slot; the balance is due 48 hours before.' },
+  { n: '02', t: 'Prep call', b: '15 minutes on set-up, guests and what you need out of the day.' },
+  { n: '03', t: 'Shoot', b: "We set up before you arrive. Sit down, five minutes of checks, and you're recording." },
+  { n: '04', t: 'Delivered', b: 'Raw files and master within 48 hours. Edits within 5 working days, with two rounds of changes.' },
+];
+---
+
+<Base
+  title="Podcast Studio Hire in Kent | Kent Content Studios"
+  description="Podcast studio and white infinity cove for hire in Cranbrook, Kent. Three-camera podcast sets with an engineer, from £295. 25 minutes from Tunbridge Wells."
+  current="/"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section
+    class="relative overflow-hidden"
+    style="background-image: radial-gradient(800px 500px at 50% 0%, rgba(192,40,30,0.12), transparent 70%)"
+  >
+    <!-- TODO: replace with a 15s silent, muted, looping showreel <video> (podcast → kitchen → cove) -->
+    <div class="container-kcs flex flex-col items-center gap-7 pb-20 pt-24 text-center md:pt-32">
+      <h1 class="heading-display max-w-5xl text-6xl sm:text-7xl md:text-[104px]">
+        Let's create something<br />worth <span class="text-red">watching.</span>
+      </h1>
+      <p class="max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+        A podcast studio and infinity cove in the heart of Kent, with a kitchen studio on the way. Walk in with an
+        idea, walk out with a finished episode.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Check availability</a>
+        <a href="#work" class="btn border border-edge text-white hover:border-white">Watch the showreel ▶</a>
+      </div>
+      <ul
+        class="mt-4 flex w-full flex-wrap justify-center gap-x-9 gap-y-3 border-t border-line pt-7 text-sm text-muted"
+      >
+        <li>Free on-site parking</li>
+        <li>25 min from Tunbridge Wells</li>
+        <li>Engineer on every podcast session</li>
+        <li>Marden station 7 min away</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Studios -->
+  <section class="container-kcs flex flex-col gap-10 py-24 md:py-28">
+    <h2 class="heading-display text-5xl md:text-6xl">Our <span class="text-red">studios.</span></h2>
+    <div class="grid gap-5 md:grid-cols-3">
+      {
+        studios.map((s) => (
+          <article class="flex flex-col overflow-hidden rounded-lg border border-line bg-panel">
+            <MediaPlaceholder label={s.media} class="h-64 rounded-none">
+              {s.soon && (
+                <span class="absolute left-3.5 top-3.5 rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider text-white">
+                  COMING SOON
+                </span>
+              )}
+            </MediaPlaceholder>
+            <div class="flex flex-1 flex-col gap-3 p-6">
+              <h3 class="heading-display text-[32px]">{s.name}</h3>
+              <p class="leading-relaxed text-muted">{s.body}</p>
+              <p class="text-sm text-muted">Best for: {s.bestFor}</p>
+              <div class="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
+                <span class="font-semibold">{s.price}</span>
+                <a href={s.href} class="whitespace-nowrap font-semibold text-red-bright hover:text-white">
+                  {s.link} →
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Two ways to work -->
+  <section id="production" class="bg-mist text-ink">
+    <div class="container-kcs flex flex-col gap-10 py-24 md:py-28">
+      <h2 class="heading-display text-5xl md:text-6xl">Two ways to work with <span class="text-red">us.</span></h2>
+      <div class="grid gap-5 md:grid-cols-2">
+        <div class="flex flex-col gap-4 rounded-lg border border-card-line bg-white p-8 md:p-10">
+          <span class="text-[13px] font-semibold tracking-wider text-[#666]">I'VE GOT A TEAM</span>
+          <h3 class="heading-display text-[44px]">Studio hire</h3>
+          <p class="leading-relaxed text-subtle">You run the shoot, we provide the room. Walk out with raw files.</p>
+          <ul class="list-disc space-y-1.5 pl-5 text-[15px] text-[#222]">
+            <li>Podcast Studio Session: £295 + VAT, 2 hrs, engineer included</li>
+            <li>Infinity Room dry hire: £40/hr · £140 half day · £270 full day</li>
+            <li>Add an edit any time from £195</li>
+          </ul>
+          <a href={site.bookingUrl} class="btn mt-2 self-start border border-ink text-ink hover:bg-ink hover:text-white"
+            >Book the studio</a
+          >
+        </div>
+        <div class="flex flex-col gap-4 rounded-lg bg-ink p-8 text-white md:p-10">
+          <span class="text-[13px] font-semibold tracking-wider text-red-bright">DO IT ALL FOR ME</span>
+          <h3 class="heading-display text-[44px]">Full production</h3>
+          <p class="leading-relaxed text-muted">
+            We record, edit and hand you posting-ready content. No editor needed on your side.
+          </p>
+          <ul class="list-disc space-y-1.5 pl-5 text-[15px] text-soft">
+            <li>Episode Package: £595 + VAT, finished episode + 5 clips</li>
+            <li>Content Plan: from £495/month, same slot every month</li>
+            <li>Content bank shoots for brands, quoted per project</li>
+          </ul>
+          <a href="/contact" class="btn mt-2 self-start bg-red text-white hover:bg-red-bright">Get a quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="container-kcs flex flex-col gap-10 py-24 md:py-28">
+    <h2 class="heading-display text-5xl md:text-6xl">Made at <span class="text-red">KCS.</span></h2>
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {
+        [
+          ['Behind The Brand', 'Episode clip'],
+          ['Dust Bros', 'Product shoot'],
+          ['[Client]', 'Vertical reel'],
+          ['[Client]', 'Cove product shoot'],
+        ].map(([who, what]) => (
+          <div class="flex aspect-[9/16] flex-col justify-end rounded-lg bg-raised p-4 text-sm text-muted">
+            <strong class="text-white">{who}</strong>
+            {what}
+          </div>
+        ))
+      }
+    </div>
+    <!-- TODO: replace with a real client quote once the first sessions are done -->
+    <figure class="flex flex-wrap items-center gap-6 rounded-lg border border-line bg-panel p-8">
+      <div class="h-16 w-16 shrink-0 rounded-full bg-raised" aria-hidden="true"></div>
+      <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+        <blockquote class="text-xl leading-relaxed">"[Client quote: one sentence, with a specific outcome.]"</blockquote>
+        <figcaption class="text-sm text-muted">[Name], [Role], [Company]</figcaption>
+      </div>
+    </figure>
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-mist text-ink">
+    <div class="container-kcs flex flex-col gap-10 py-24 md:py-28">
+      <h2 class="heading-display text-5xl md:text-6xl">
+        Booked to finished episode in 5 working <span class="text-red">days.</span>
+      </h2>
+      <ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((s) => (
+            <li class="flex flex-col gap-2.5 border-t-2 border-red pt-5">
+              <span class="heading-display text-[56px] text-red">{s.n}</span>
+              <h3 class="text-lg font-semibold">{s.t}</h3>
+              <p class="text-[15px] leading-relaxed text-subtle">{s.b}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="container-kcs flex scroll-mt-24 flex-col gap-10 py-24 md:py-28">
+    <h2 class="heading-display text-5xl md:text-6xl">Straightforward <span class="text-red">pricing.</span></h2>
+
+    <div class="flex flex-col gap-4">
+      <h3 class="heading-display text-3xl">
+        Podcast Studio <span class="font-sans text-[15px] text-muted">· priced per session, ex VAT</span>
+      </h3>
+      <div class="grid gap-4 md:grid-cols-3">
+        {
+          podcastPlans.map((p) => (
+            <div
+              class:list={[
+                'flex flex-col gap-3 rounded-lg bg-panel p-7',
+                p.featured ? 'border-2 border-red' : 'border border-line',
+              ]}
+            >
+              <div class="flex items-center justify-between gap-3">
+                <strong>{p.name}</strong>
+                {p.featured && (
+                  <span class="rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider">MOST BOOKED</span>
+                )}
+              </div>
+              <span class="heading-display text-[64px]">
+                {p.price}
+                {p.unit && <span class="font-sans text-[15px] text-muted">{p.unit}</span>}
+              </span>
+              <p class:list={['text-[15px] leading-relaxed', p.featured ? 'text-soft' : 'text-muted']}>{p.body}</p>
+              <span class="text-[13px] text-muted">{p.forWho}</span>
+              <a
+                href={p.name === 'Content Plan' ? '/contact' : site.bookingUrl}
+                class:list={[
+                  'btn mt-auto',
+                  p.featured ? 'bg-red text-white hover:bg-red-bright' : 'border border-edge text-white hover:border-white',
+                ]}
+              >
+                {p.cta}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+      <p class="text-sm text-muted">{podcastExtras}</p>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <h3 class="heading-display text-3xl">
+        White Infinity Room <span class="font-sans text-[15px] text-muted">· dry hire, no equipment</span>
+      </h3>
+      <div class="grid gap-4 sm:grid-cols-3">
+        {
+          covePrices.map((c) => (
+            <div class="flex flex-col gap-1.5 rounded-lg border border-line bg-panel p-6">
+              <span class="text-[13px] text-muted">
+                {c.label} · {c.note}
+              </span>
+              <span class="heading-display text-5xl">{c.price}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div
+      class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-[#7a2a24] bg-red/10 px-6 py-5"
+    >
+      <span><strong class="heading-display text-2xl">Kitchen Studio</strong> <span class="text-muted">· opening soon</span></span>
+      <a href="/kitchen-studio" class="text-sm font-semibold uppercase tracking-wide text-red-bright hover:text-white"
+        >Register interest →</a
+      >
+    </div>
+  </section>
+
+  <!-- Why Kent -->
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid items-center gap-12 py-24 md:grid-cols-2 md:py-28">
+      <div class="flex flex-col gap-4">
+        <h2 class="heading-display text-5xl md:text-6xl">Why come to <span class="text-red">Kent?</span></h2>
+        <ul class="list-disc space-y-2 pl-5 text-[17px] text-[#222]">
+          <li>No congestion charge, no parking hunt</li>
+          <li>Three sets under one roof: one booking, three looks</li>
+          <li>Your team shoots, not sits in traffic</li>
+          <li>Countryside location for exterior B-roll</li>
+          <li>London Bridge to Marden in 48 min, direct</li>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-4 rounded-lg border border-card-line bg-white p-6">
+        <!-- TODO: embed a map (Google Maps iframe or static image) -->
+        <a
+          href={site.mapsUrl}
+          target="_blank"
+          rel="noopener"
+          class="flex h-56 items-center justify-center rounded-md bg-[#e6e6e6] text-center text-subtle hover:text-ink"
+          >Open in Google Maps →</a
+        >
+        <address class="not-italic text-[15px] leading-relaxed text-body">
+          {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}
+        </address>
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-[15px]">
+          {
+            driveTimes.map((d) => (
+              <div class="flex justify-between gap-3 border-b border-card-line pb-2">
+                <dt class="text-subtle">{d.from}</dt>
+                <dd class="font-semibold">{d.time}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="container-kcs flex flex-col gap-8 py-24 md:py-28">
+    <h2 class="heading-display text-5xl md:text-6xl">Questions.</h2>
+    <FaqList items={homeFaqs} openFirst />
+    <a href="/faq" class="self-start text-sm font-semibold uppercase tracking-wide text-red-bright hover:text-white"
+      >See all FAQs →</a
+    >
+  </section>
+
+  <CtaBand />
+</Base>

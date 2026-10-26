@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { faqGroups, allFaqs } from '../data/faq';
+import { site } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allFaqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base
+  title="FAQ | Kent Content Studios"
+  description="Answers on booking, deposits, files, studio hire, parking and getting to Kent Content Studios in Cranbrook, Kent."
+  current="/faq"
+  jsonLd={jsonLd}
+>
+  <section style="background-image: radial-gradient(800px 420px at 50% 0%, rgba(192,40,30,0.12), transparent 70%)">
+    <div class="container-kcs flex flex-col gap-5 pb-16 pt-24">
+      <h1 class="heading-display text-7xl md:text-[96px]">Questions? <span class="text-red">Answered.</span></h1>
+      <p class="max-w-2xl text-lg leading-relaxed text-muted">
+        Everything you need to know before you book. Can't find it here? Email
+        <a href={`mailto:${site.email}`} class="text-white underline decoration-red underline-offset-4">{site.email}</a> and we'll get back to you.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid items-start gap-12 py-16 md:py-20 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <nav aria-label="FAQ sections" class="flex flex-wrap gap-2 lg:sticky lg:top-24 lg:flex-col lg:gap-1">
+        {
+          faqGroups.map((g) => (
+            <a href={`#${g.id}`} class="rounded-lg px-3.5 py-2.5 text-[15px] font-medium text-body no-underline hover:bg-white hover:text-ink">
+              {g.title}
+            </a>
+          ))
+        }
+      </nav>
+      <div class="flex min-w-0 flex-col gap-14">
+        {
+          faqGroups.map((g) => (
+            <div id={g.id} class="scroll-mt-24">
+              <h2 class="heading-display mb-2 flex flex-wrap items-center gap-3 text-[44px]">
+                {g.title}
+                {g.soon && (
+                  <span class="rounded-md bg-red px-2.5 py-1 font-sans text-[11px] font-bold tracking-wider text-white">
+                    COMING SOON
+                  </span>
+                )}
+              </h2>
+              <FaqList items={g.items} tone="light" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Still got a" accent="question?" body="Book a free tour, or email us and we'll get straight back to you." />
+</Base>

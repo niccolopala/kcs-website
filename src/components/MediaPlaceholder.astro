@@ -1,0 +1,23 @@
+---
+// Stand-in for a photo or video until real media is supplied.
+// Replace each usage with <img> / <video> once the shoot is done.
+interface Props {
+  label: string;
+  class?: string;
+  tone?: 'dark' | 'light';
+}
+const { label, class: className = '', tone = 'dark' } = Astro.props;
+---
+
+<div
+  role="img"
+  aria-label={`Placeholder: ${label}`}
+  class:list={[
+    'relative flex items-center justify-center overflow-hidden rounded-lg p-6 text-center text-sm',
+    tone === 'dark' ? 'bg-raised text-muted' : 'bg-[#e6e6e6] text-subtle',
+    className,
+  ]}
+>
+  <span>{label}</span>
+  <slot />
+</div>

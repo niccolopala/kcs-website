@@ -1,0 +1,27 @@
+---
+import type { Faq } from '../data/faq';
+interface Props {
+  items: Faq[];
+  tone?: 'dark' | 'light';
+  openFirst?: boolean;
+}
+const { items, tone = 'dark', openFirst = false } = Astro.props;
+const rule = tone === 'dark' ? 'border-line-strong' : 'border-rule';
+const answer = tone === 'dark' ? 'text-muted' : 'text-body';
+---
+
+<div class:list={['border-t', rule]}>
+  {
+    items.map((item, i) => (
+      <details class:list={['border-b', rule]} open={openFirst && i === 0}>
+        <summary class="flex cursor-pointer items-start justify-between gap-6 py-5 text-lg font-semibold">
+          <span>{item.q}</span>
+          <span class="faq-icon mt-0.5 text-2xl leading-none text-red transition-transform" aria-hidden="true">
+            +
+          </span>
+        </summary>
+        <p class:list={['max-w-3xl pb-6 text-base leading-relaxed', answer]}>{item.a}</p>
+      </details>
+    ))
+  }
+</div>

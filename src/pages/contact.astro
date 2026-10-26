@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import InterestForm from '../components/InterestForm.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Book or Get in Touch | Kent Content Studios"
+  description="Book the podcast studio or infinity cove at Kent Content Studios in Cranbrook, arrange a free tour, or ask us a question."
+  current="/contact"
+>
+  <section style="background-image: radial-gradient(800px 420px at 50% 0%, rgba(192,40,30,0.12), transparent 70%)">
+    <div class="container-kcs flex flex-col gap-5 pb-14 pt-24">
+      <h1 class="heading-display text-7xl md:text-[96px]">Let's get you <span class="text-red">booked.</span></h1>
+      <p class="max-w-2xl text-lg leading-relaxed text-muted">
+        Tell us what you're planning, or ask for a free tour. We'll reply within one working day.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid items-start gap-12 py-16 md:py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <div class="flex flex-col gap-6">
+        <!-- TODO: replace this block with the Cal.com inline embed once booking is live -->
+        <h2 class="heading-display text-[44px]">Send an enquiry</h2>
+        <InterestForm name="enquiry" tone="light" submitLabel="Send enquiry" />
+      </div>
+      <aside class="flex flex-col gap-5 rounded-lg bg-ink p-7 text-white">
+        <h2 class="heading-display text-4xl">Find <span class="text-red">us.</span></h2>
+        <address class="not-italic leading-relaxed text-soft">
+          {site.address.line1}<br />
+          {site.address.line2}<br />
+          {site.address.town}, {site.address.county} {site.address.postcode}
+        </address>
+        <p class="text-sm text-muted">what3words: ///{site.address.what3words}</p>
+        <p class="text-sm text-muted">{site.hours}. Evenings and weekends by arrangement.</p>
+        <div class="flex flex-col gap-2 border-t border-line-strong pt-5 text-sm">
+          <a href={`mailto:${site.email}`} class="text-white hover:text-red-bright">{site.email}</a>
+          <a href={site.instagram} target="_blank" rel="noopener" class="text-white hover:text-red-bright">{site.instagramHandle}</a>
+        </div>
+        <a href={site.mapsUrl} target="_blank" rel="noopener" class="btn border border-edge text-white hover:border-white"
+          >Directions</a
+        >
+      </aside>
+    </div>
+  </section>
+</Base>

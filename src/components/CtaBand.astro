@@ -1,0 +1,29 @@
+---
+import { site } from '../data/site';
+interface Props {
+  heading?: string;
+  accent?: string;
+  body?: string;
+}
+const {
+  heading = 'Secure your',
+  accent = 'spot.',
+  body = "Pick a date and we'll handle the rest. Not sure yet? Book a free tour of the studios.",
+} = Astro.props;
+---
+
+<section
+  class="border-t border-line bg-panel"
+  style="background-image: radial-gradient(700px 420px at 85% 100%, rgba(192,40,30,0.14), transparent 70%)"
+>
+  <div class="container-kcs flex flex-col gap-8 py-20 md:flex-row md:items-end md:justify-between md:py-24">
+    <div class="flex max-w-xl flex-col gap-4">
+      <h2 class="heading-display text-6xl md:text-7xl">{heading} <span class="text-red">{accent}</span></h2>
+      <p class="text-lg leading-relaxed text-muted">{body}</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Check availability</a>
+      <a href="/contact" class="btn border border-edge text-white hover:border-white">Book a free tour</a>
+    </div>
+  </div>
+</section>

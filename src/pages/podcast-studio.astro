@@ -1,0 +1,156 @@
+---
+import Base from '../layouts/Base.astro';
+import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import FaqList from '../components/FaqList.astro';
+import BookingCard from '../components/BookingCard.astro';
+import { allFaqs } from '../data/faq';
+import { podcastAddOns, podcastPlans } from '../data/pricing';
+
+const faqs = allFaqs.filter((f) => f.podcast);
+
+const included = [
+  ['Cameras', 'Sony FX30 × 3, Sigma primes'],
+  ['Audio', 'Rode broadcast microphones'],
+  ['Lighting', 'Pre-set key, fill and practicals'],
+  ['Engineer', 'Nick or James runs the kit for you'],
+  ['Raw files + master', 'Synced multi-cam master within 48 hours'],
+  ['Planning call', 'A pre-session call to plan the episode'],
+  ['Breakout kitchen and parking', 'Fridge, microwave, decent coffee, parking on site'],
+];
+---
+
+<Base
+  title="Podcast Studio Hire in Kent | Kent Content Studios"
+  description="Three-camera video podcast studio in Cranbrook, Kent. Sony FX30s, pro lighting and an engineer included. Sessions from £295 + VAT, finished episodes from £595."
+  current="/podcast-studio"
+>
+  <div class="container-kcs pt-5 text-[13px] text-muted">
+    <a href="/" class="text-muted hover:text-white">Home</a> / Studios / Podcast Studio
+  </div>
+
+  <!-- Gallery -->
+  <section class="container-kcs grid gap-3 pb-16 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- TODO: first tile = 30s sample episode filmed in this room; thumbnails open a lightbox -->
+    <MediaPlaceholder label="▶ Sample episode filmed in this room (3-cam cut)" class="h-72 sm:col-span-2 md:h-[460px] lg:col-span-4" />
+    <MediaPlaceholder label="Wide set" class="h-40" />
+    <MediaPlaceholder label="Mic and desk detail" class="h-40" />
+    <MediaPlaceholder label="Camera angles" class="h-40" />
+    <MediaPlaceholder label="Green room and arrival" class="h-40" />
+  </section>
+
+  <section class="bg-mist text-ink">
+    <div class="container-kcs grid items-start gap-12 py-20 md:py-24 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div class="flex min-w-0 flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h1 class="heading-display text-7xl md:text-[88px]">The Podcast <span class="text-red">Studio.</span></h1>
+          <p class="max-w-2xl text-lg leading-relaxed text-subtle">
+            Choice of three sets, three Sony FX30s, pro lighting and an engineer who runs it all. Sit down, press
+            record, walk out with a finished episode.
+          </p>
+          <ul class="flex flex-wrap gap-2.5 text-[13px] font-medium">
+            {
+              ['Up to 4 guests', 'Choice of 3 sets', '3 × Sony FX30', 'Engineer included', 'Free parking'].map((t) => (
+                <li class="rounded-lg border border-card-line bg-white px-3.5 py-2">{t}</li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Every booking includes</h2>
+          <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {
+              included.map(([t, b]) => (
+                <div class="flex flex-col gap-1.5 rounded-lg border border-card-line bg-white p-5">
+                  <strong>{t}</strong>
+                  <span class="text-sm text-subtle">{b}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Packages</h2>
+          <div class="grid gap-3 md:grid-cols-3">
+            {
+              podcastPlans.map((p) => (
+                <div
+                  class:list={[
+                    'flex flex-col gap-2 rounded-lg bg-white p-5',
+                    p.featured ? 'border-2 border-red' : 'border border-card-line',
+                  ]}
+                >
+                  <strong>{p.name}</strong>
+                  <span class="heading-display text-5xl">
+                    {p.price}
+                    {p.unit && <span class="font-sans text-sm text-subtle">{p.unit}</span>}
+                  </span>
+                  <p class="text-sm leading-relaxed text-subtle">{p.body}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Add-ons</h2>
+          <ul class="border-t border-rule">
+            {
+              podcastAddOns.map((a) => (
+                <li class="flex flex-wrap justify-between gap-2 border-b border-rule py-4">
+                  <span>
+                    <strong>{a.name}</strong>
+                    {a.detail && <span class="text-subtle"> · {a.detail}</span>}
+                  </span>
+                  <span class="font-semibold">{a.price}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="text-[13px] text-subtle">All prices ex VAT.</p>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Recorded <span class="text-red">here.</span></h2>
+          <div class="grid gap-3 sm:grid-cols-3">
+            <MediaPlaceholder label="Behind The Brand · episode clip" class="h-44" />
+            <MediaPlaceholder label="[Show name] · episode" class="h-44" />
+            <MediaPlaceholder label="[Show name] · episode" class="h-44" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <h2 class="heading-display text-[44px]">Good to know</h2>
+          <FaqList items={faqs} tone="light" />
+          <a href="/faq" class="self-start text-sm font-semibold uppercase tracking-wide text-red hover:text-ink"
+            >See all FAQs →</a
+          >
+        </div>
+      </div>
+
+      <BookingCard
+        from="£295"
+        unit="/ 2-hr session + VAT"
+        note="Most clients book the Episode Package: £595 for a finished episode and 5 clips."
+        points={['Engineer and kit included', 'We set up before you arrive', 'Raw files within 48 hours']}
+      />
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-panel">
+    <div class="container-kcs flex flex-col gap-6 py-20">
+      <h2 class="heading-display text-5xl">Make a day of <span class="text-red">it.</span></h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <a href="/infinity-room" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+          <strong class="heading-display text-[28px]">White Infinity Room</strong>
+          <span class="text-muted">Talking-head promos and headshots for the same guests.</span>
+        </a>
+        <a href="/kitchen-studio" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+          <strong class="heading-display text-[28px]">Kitchen Studio</strong>
+          <span class="text-muted">Coming soon: a full kitchen set for food and product content.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
