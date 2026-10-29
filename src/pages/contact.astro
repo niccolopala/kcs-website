@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import InterestForm from '../components/InterestForm.astro';
-import { site } from '../data/site';
+import { site, calLinks } from '../data/site';
+import { podcastBookings } from '../data/pricing';
 ---
 
 <Base
@@ -13,16 +14,62 @@ import { site } from '../data/site';
     <div class="container-kcs flex flex-col gap-5 pb-14 pt-24">
       <h1 class="heading-display text-7xl md:text-[96px]">Let's get you <span class="text-red">booked.</span></h1>
       <p class="max-w-2xl text-lg leading-relaxed text-muted">
-        Tell us what you're planning, or ask for a free tour. We'll reply within one working day.
+        Book the podcast studio online, request the infinity room, or come and see the space first.
       </p>
     </div>
   </section>
 
-  <section class="bg-mist text-ink">
+  <!-- Booking options -->
+  <section class="container-kcs grid gap-5 pb-20 lg:grid-cols-3">
+    <div class="flex flex-col gap-4 rounded-lg border-2 border-red bg-panel p-7 lg:col-span-2">
+      <div class="flex flex-col gap-1">
+        <h2 class="heading-display text-4xl">Podcast <span class="text-red">Studio</span></h2>
+        <p class="text-sm text-muted">Pick a package, choose a time and pay a 50% deposit to secure it. Prices + VAT.</p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {
+          podcastBookings.map((o) => (
+            <a
+              href={o.href}
+              class:list={[
+                'flex items-center justify-between gap-3 rounded-lg border px-4 py-4 no-underline transition-colors',
+                o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong bg-ink hover:border-edge',
+              ]}
+            >
+              <span class="flex flex-col">
+                <strong class="text-white">{o.name}</strong>
+                <span class="text-xs text-muted">{o.detail}</span>
+              </span>
+              <span class="whitespace-nowrap font-semibold text-white">{o.price} →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <a href="#enquire" class="flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline hover:border-edge">
+        <h2 class="heading-display text-3xl text-white">White Infinity Room</h2>
+        <p class="text-sm text-muted">From £40/hr + VAT. Send a request and we'll confirm your slot.</p>
+        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Request a booking →</span>
+      </a>
+      <a href={calLinks.tour} class="flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline hover:border-edge">
+        <h2 class="heading-display text-3xl text-white">Free studio tour</h2>
+        <p class="text-sm text-muted">20 minutes to see the sets and talk through your project.</p>
+        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Book a tour →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="enquire" class="scroll-mt-20 bg-mist text-ink">
     <div class="container-kcs grid items-start gap-12 py-16 md:py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-6">
-        <!-- TODO: replace this block with the Cal.com inline embed once booking is live -->
-        <h2 class="heading-display text-[44px]">Send an enquiry</h2>
+        <div class="flex flex-col gap-2">
+          <h2 class="heading-display text-[44px]">Infinity Room requests and enquiries</h2>
+          <p class="text-subtle">
+            Tell us the date, how long you need and what you're shooting. Content Plans and bigger productions too.
+            We'll reply within one working day.
+          </p>
+        </div>
         <InterestForm name="enquiry" tone="light" submitLabel="Send enquiry" />
       </div>
       <aside class="flex flex-col gap-5 rounded-lg bg-ink p-7 text-white">

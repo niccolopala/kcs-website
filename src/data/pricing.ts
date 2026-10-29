@@ -1,4 +1,5 @@
 // All prices ex VAT.
+import { calLinks } from './site';
 
 export const podcastPlans = [
   {
@@ -8,6 +9,7 @@ export const podcastPlans = [
     body: 'Two hours. Engineer, three cameras, lighting. Raw files and a synced multi-cam master within 48 hours.',
     forWho: 'For teams with their own editor',
     cta: 'Book a session',
+    href: calLinks.studioSession,
     featured: false,
   },
   {
@@ -17,6 +19,7 @@ export const podcastPlans = [
     body: 'Studio Session plus a fully edited episode (up to 60 min) and 5 captioned vertical clips. Edits within 5 working days.',
     forWho: 'For firms that want to walk out and publish',
     cta: 'Book an episode',
+    href: calLinks.episodePackage,
     featured: true,
   },
   {
@@ -26,8 +29,17 @@ export const podcastPlans = [
     body: 'One Episode Package a month. Fixed slot, same set and engineer, priority booking. 6-month term, or £545/month over 3 months. Two episodes: £950/month.',
     forWho: 'For a regular show or LinkedIn series',
     cta: 'Start a plan',
+    href: '/contact',
     featured: false,
   },
+];
+
+// Every podcast booking option on Cal.com, in the order shown on the booking hub.
+export const podcastBookings = [
+  { name: 'Episode Package', detail: '2 hrs · finished episode + 5 clips', price: '£595', href: calLinks.episodePackage, featured: true },
+  { name: 'Studio Session', detail: '2 hrs · raw files + multi-cam master', price: '£295', href: calLinks.studioSession },
+  { name: 'Batch Session', detail: '4 hrs · record several episodes', price: '£495', href: calLinks.batchSession },
+  { name: 'Full Day', detail: '8 hrs · engineer all day', price: '£850', href: calLinks.fullDay },
 ];
 
 export const podcastExtras =

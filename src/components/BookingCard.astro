@@ -1,15 +1,19 @@
 ---
-import { site } from '../data/site';
+import { site, calLinks } from '../data/site';
+
+type Option = { name: string; detail: string; price: string; href: string; featured?: boolean };
+
 interface Props {
   from: string;
   unit: string;
   note?: string;
   points: string[];
+  /** Podcast Studio: list of Cal.com packages. Omit to fall back to the enquiry form (Infinity Room). */
+  options?: Option[];
 }
-const { from, unit, note, points } = Astro.props;
+const { from, unit, note, points, options } = Astro.props;
 ---
 
-<!-- TODO: once Cal.com is set up, embed the booking widget here or point the button at the Cal.com event. -->
 <aside
   id="book"
   class="flex scroll-mt-24 flex-col gap-5 rounded-lg border-t-[3px] border-red bg-ink p-7 text-white lg:sticky lg:top-24"
@@ -21,21 +25,49 @@ const { from, unit, note, points } = Astro.props;
     </span>
     {note && <p class="text-sm leading-relaxed text-soft">{note}</p>}
   </div>
-  <ul class="space-y-2 border-t border-line-strong pt-4 text-sm text-soft">
-    {
-      points.map((p) => (
-        <li class="flex gap-2.5">
-          <span class="text-red-bright" aria-hidden="true">
-            ✓
-          </span>
-          {p}
-        </li>
-      ))
-    }
-  </ul>
-  <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Reserve with 50% deposit</a>
+
+  {
+    options ? (
+      <div class="flex flex-col gap-2 border-t border-line-strong pt-4">
+        <span class="text-[13px] font-semibold">Choose a package</span>
+        {options.map((o) => (
+          <a
+            href={o.href}
+            class:list={[
+              'flex items-center justify-between gap-3 rounded-lg border px-4 py-3 no-underline transition-colors',
+              o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong hover:border-edge',
+            ]}
+          >
+            <span class="flex flex-col">
+              <strong class="text-[15px] text-white">{o.name}</strong>
+              <span class="text-xs text-muted">{o.detail}</span>
+            </span>
+            <span class="whitespace-nowrap text-sm font-semibold text-white">{o.price} →</span>
+          </a>
+        ))}
+        <p class="pt-1 text-xs text-muted">Prices + VAT. Pay a 50% deposit to secure your slot.</p>
+      </div>
+    ) : (
+      <>
+        <ul class="space-y-2 border-t border-line-strong pt-4 text-sm text-soft">
+          {points.map((p) => (
+            <li class="flex gap-2.5">
+              <span class="text-red-bright" aria-hidden="true">
+                ✓
+              </span>
+              {p}
+            </li>
+          ))}
+        </ul>
+        <a href={`${site.bookingUrl}#enquire`} class="btn bg-red text-white hover:bg-red-bright">
+          Request a booking
+        </a>
+      </>
+    )
+  }
+
   <p class="text-center text-[13px] leading-relaxed text-muted">
     Balance due 48 hours before your session.<br />One free reschedule with 48 hours' notice.
   </p>
-  <a href="/contact" class="text-center text-sm text-red-bright hover:text-white">Or book a free tour first</a>
+  <a href={calLinks.tour} class="text-center text-sm text-red-bright hover:text-white">Or book a free tour first</a>
 </aside>

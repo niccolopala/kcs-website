@@ -4,7 +4,7 @@ import MediaPlaceholder from '../components/MediaPlaceholder.astro';
 import FaqList from '../components/FaqList.astro';
 import BookingCard from '../components/BookingCard.astro';
 import { allFaqs } from '../data/faq';
-import { podcastAddOns, podcastPlans } from '../data/pricing';
+import { podcastAddOns, podcastPlans, podcastBookings } from '../data/pricing';
 
 const faqs = allFaqs.filter((f) => f.podcast);
 
@@ -134,6 +134,7 @@ const included = [
         unit="/ 2-hr session + VAT"
         note="Most clients book the Episode Package: £595 for a finished episode and 5 clips."
         points={['Engineer and kit included', 'We set up before you arrive', 'Raw files within 48 hours']}
+        options={podcastBookings}
       />
     </div>
   </section>

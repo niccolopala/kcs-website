@@ -1,5 +1,5 @@
 ---
-import { site } from '../data/site';
+import { site, calLinks } from '../data/site';
 interface Props {
   heading?: string;
   accent?: string;
@@ -23,7 +23,7 @@ const {
     </div>
     <div class="flex flex-wrap gap-3">
       <a href={site.bookingUrl} class="btn bg-red text-white hover:bg-red-bright">Check availability</a>
-      <a href="/contact" class="btn border border-edge text-white hover:border-white">Book a free tour</a>
+      <a href={calLinks.tour} class="btn border border-edge text-white hover:border-white">Book a free tour</a>
     </div>
   </div>
 </section>
