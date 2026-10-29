@@ -107,7 +107,7 @@ const steps = [
     <div class="grid gap-5 md:grid-cols-3">
       {
         studios.map((s) => (
-          <article class="flex flex-col overflow-hidden rounded-lg border border-line bg-panel">
+          <article class="hover-lift group flex flex-col overflow-hidden rounded-lg border border-line bg-panel">
             <MediaPlaceholder label={s.media} class="h-64 rounded-none">
               {s.soon && (
                 <span class="absolute left-3.5 top-3.5 rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider text-white">
@@ -122,7 +122,7 @@ const steps = [
               <div class="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
                 <span class="font-semibold">{s.price}</span>
                 <a href={s.href} class="whitespace-nowrap font-semibold text-red-bright hover:text-white">
-                  {s.link} →
+                  {s.link} <span class="arrow">→</span>
                 </a>
               </div>
             </div>
@@ -283,7 +283,7 @@ const steps = [
     >
       <span><strong class="heading-display text-2xl">Kitchen Studio</strong> <span class="text-muted">· opening soon</span></span>
       <a href="/kitchen-studio" class="text-sm font-semibold uppercase tracking-wide text-red-bright hover:text-white"
-        >Register interest →</a
+        >Register interest <span class="arrow">→</span></a
       >
     </div>
   </section>
@@ -308,7 +308,7 @@ const steps = [
           target="_blank"
           rel="noopener"
           class="flex h-56 items-center justify-center rounded-md bg-[#e6e6e6] text-center text-subtle hover:text-ink"
-          >Open in Google Maps →</a
+          >Open in Google Maps <span class="arrow">→</span></a
         >
         <address class="not-italic text-[15px] leading-relaxed text-body">
           {site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}
@@ -332,7 +332,7 @@ const steps = [
     <h2 class="heading-display text-5xl md:text-6xl">Questions.</h2>
     <FaqList items={homeFaqs} openFirst />
     <a href="/faq" class="self-start text-sm font-semibold uppercase tracking-wide text-red-bright hover:text-white"
-      >See all FAQs →</a
+      >See all FAQs <span class="arrow">→</span></a
     >
   </section>
 

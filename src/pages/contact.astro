@@ -32,30 +32,30 @@ import { podcastBookings } from '../data/pricing';
             <a
               href={o.href}
               class:list={[
-                'flex items-center justify-between gap-3 rounded-lg border px-4 py-4 no-underline transition-colors',
-                o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong bg-ink hover:border-edge',
+                'hover-lift flex items-center justify-between gap-3 rounded-lg border px-4 py-4 no-underline',
+                o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong bg-ink',
               ]}
             >
               <span class="flex flex-col">
                 <strong class="text-white">{o.name}</strong>
                 <span class="text-xs text-muted">{o.detail}</span>
               </span>
-              <span class="whitespace-nowrap font-semibold text-white">{o.price} →</span>
+              <span class="whitespace-nowrap font-semibold text-white">{o.price} <span class="arrow">→</span></span>
             </a>
           ))
         }
       </div>
     </div>
     <div class="flex flex-col gap-4">
-      <a href="#enquire" class="flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline hover:border-edge">
+      <a href="#enquire" class="hover-lift flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline">
         <h2 class="heading-display text-3xl text-white">White Infinity Room</h2>
         <p class="text-sm text-muted">From £40/hr + VAT. Send a request and we'll confirm your slot.</p>
-        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Request a booking →</span>
+        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Request a booking <span class="arrow">→</span></span>
       </a>
-      <a href={calLinks.tour} class="flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline hover:border-edge">
+      <a href={calLinks.tour} class="hover-lift flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline">
         <h2 class="heading-display text-3xl text-white">Free studio tour</h2>
         <p class="text-sm text-muted">20 minutes to see the sets and talk through your project.</p>
-        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Book a tour →</span>
+        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Book a tour <span class="arrow">→</span></span>
       </a>
     </div>
   </section>

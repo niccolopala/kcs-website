@@ -34,15 +34,15 @@ const { from, unit, note, points, options } = Astro.props;
           <a
             href={o.href}
             class:list={[
-              'flex items-center justify-between gap-3 rounded-lg border px-4 py-3 no-underline transition-colors',
-              o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong hover:border-edge',
+              'hover-lift flex items-center justify-between gap-3 rounded-lg border px-4 py-3 no-underline',
+              o.featured ? 'border-red bg-red/10 hover:bg-red/20' : 'border-line-strong',
             ]}
           >
             <span class="flex flex-col">
               <strong class="text-[15px] text-white">{o.name}</strong>
               <span class="text-xs text-muted">{o.detail}</span>
             </span>
-            <span class="whitespace-nowrap text-sm font-semibold text-white">{o.price} →</span>
+            <span class="whitespace-nowrap text-sm font-semibold text-white">{o.price} <span class="arrow">→</span></span>
           </a>
         ))}
         <p class="pt-1 text-xs text-muted">Prices + VAT. Pay a 50% deposit to secure your slot.</p>

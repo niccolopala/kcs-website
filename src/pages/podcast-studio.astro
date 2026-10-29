@@ -124,7 +124,7 @@ const included = [
           <h2 class="heading-display text-[44px]">Good to know</h2>
           <FaqList items={faqs} tone="light" />
           <a href="/faq" class="self-start text-sm font-semibold uppercase tracking-wide text-red hover:text-ink"
-            >See all FAQs →</a
+            >See all FAQs <span class="arrow">→</span></a
           >
         </div>
       </div>
@@ -143,11 +143,11 @@ const included = [
     <div class="container-kcs flex flex-col gap-6 py-20">
       <h2 class="heading-display text-5xl">Make a day of <span class="text-red">it.</span></h2>
       <div class="grid gap-4 md:grid-cols-2">
-        <a href="/infinity-room" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+        <a href="/infinity-room" class="hover-lift flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline">
           <strong class="heading-display text-[28px]">White Infinity Room</strong>
           <span class="text-muted">Talking-head promos and headshots for the same guests.</span>
         </a>
-        <a href="/kitchen-studio" class="flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline hover:border-edge">
+        <a href="/kitchen-studio" class="hover-lift flex flex-col gap-2 rounded-lg border border-line-strong bg-ink p-6 no-underline">
           <strong class="heading-display text-[28px]">Kitchen Studio</strong>
           <span class="text-muted">Coming soon: a full kitchen set for food and product content.</span>
         </a>

@@ -94,3 +94,47 @@ details[open] .faq-icon {
     scroll-behavior: auto;
   }
 }
+
+/* ---------- Hover motion ---------- */
+@utility hover-lift {
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 220ms, background-color 220ms,
+    box-shadow 220ms;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-red);
+    box-shadow: 0 14px 34px -14px rgba(192, 40, 30, 0.55);
+  }
+}
+
+@layer components {
+  .arrow {
+    display: inline-block;
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  a:hover .arrow,
+  .hover-lift:hover .arrow,
+  a.arrow:hover {
+    transform: translateX(5px);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+  .btn {
+    transition: background-color 150ms, border-color 150ms, color 150ms, transform 180ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-lift:hover,
+  .btn,
+  .btn:hover,
+  .arrow,
+  a:hover .arrow {
+    transform: none !important;
+    transition: none !important;
+  }
+}
