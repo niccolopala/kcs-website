@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import { Image } from 'astro:assets';
+import kitchenBuild from '../assets/kitchen/kitchen-build.jpg';
 import InterestForm from '../components/InterestForm.astro';
 ---
 
@@ -20,7 +21,14 @@ import InterestForm from '../components/InterestForm.astro';
         </p>
         <p class="text-muted">Register your interest and you'll be the first to hear when it opens, along with pricing.</p>
       </div>
-      <MediaPlaceholder label="Build-in-progress shot or render" class="h-80 md:h-[420px]" />
+      <Image
+        src={kitchenBuild}
+        alt="The Kitchen Studio under construction at Kent Content Studios, with a coming soon sign"
+        widths={[600, 1000, 1400]}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        loading="eager"
+        class="aspect-video w-full rounded-lg object-cover"
+      />
     </div>
   </section>
 
