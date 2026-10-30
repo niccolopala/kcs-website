@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import { Image } from 'astro:assets';
+import coveWide from '../assets/cove/cove-wide.jpg';
+import coveDoors from '../assets/cove/cove-doors.jpg';
 import FaqList from '../components/FaqList.astro';
 import BookingCard from '../components/BookingCard.astro';
 import { allFaqs } from '../data/faq';
@@ -27,12 +29,22 @@ const specs = [
     <a href="/" class="text-muted hover:text-white">Home</a> / Studios / White Infinity Room
   </div>
 
-  <section class="container-kcs grid gap-3 pb-16 pt-8 sm:grid-cols-2 lg:grid-cols-4">
-    <MediaPlaceholder label="Wide shot of the cove, lit" class="h-72 sm:col-span-2 md:h-[460px] lg:col-span-4" />
-    <MediaPlaceholder label="Product shoot example" class="h-40" />
-    <MediaPlaceholder label="Talking-head example" class="h-40" />
-    <MediaPlaceholder label="Fashion example" class="h-40" />
-    <MediaPlaceholder label="Behind the scenes" class="h-40" />
+  <section class="container-kcs grid gap-3 pb-16 pt-8 md:grid-cols-3">
+    <Image
+      src={coveWide}
+      alt="Wide view of the white infinity cove at Kent Content Studios, with exposed oak beams"
+      widths={[800, 1200, 1672]}
+      sizes="(min-width: 768px) 66vw, 100vw"
+      loading="eager"
+      class="aspect-video w-full rounded-lg object-cover md:col-span-2 md:h-full"
+    />
+    <Image
+      src={coveDoors}
+      alt="The white infinity cove, with double doors for bringing in kit"
+      widths={[600, 1000]}
+      sizes="(min-width: 768px) 33vw, 100vw"
+      class="aspect-video w-full rounded-lg object-cover md:aspect-auto md:h-full"
+    />
   </section>
 
   <section class="bg-mist text-ink">

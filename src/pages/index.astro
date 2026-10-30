@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
 import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import coveWide from '../assets/cove/cove-wide.jpg';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, driveTimes } from '../data/site';
@@ -40,7 +42,8 @@ const studios = [
   {
     name: 'White Infinity Room',
     href: '/infinity-room',
-    media: 'Hover-to-play clip: infinity cove',
+    media: 'White infinity cove',
+    image: coveWide,
     body: '4.5m × 4.0m cove, up to 10 people. Dry hire: bring your own lights, or hire ours.',
     bestFor: 'Product, fashion, e-commerce, talking heads',
     price: 'From £40/hr · 2 hr min',
@@ -108,13 +111,25 @@ const steps = [
       {
         studios.map((s) => (
           <article class="hover-lift group flex flex-col overflow-hidden rounded-lg border border-line bg-panel">
-            <MediaPlaceholder label={s.media} class="h-64 rounded-none">
-              {s.soon && (
-                <span class="absolute left-3.5 top-3.5 rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider text-white">
-                  COMING SOON
-                </span>
-              )}
-            </MediaPlaceholder>
+            {s.image ? (
+              <div class="h-64 overflow-hidden">
+                <Image
+                  src={s.image}
+                  alt={`${s.media} at Kent Content Studios`}
+                  widths={[480, 800]}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            ) : (
+              <MediaPlaceholder label={s.media} class="h-64 rounded-none">
+                {s.soon && (
+                  <span class="absolute left-3.5 top-3.5 rounded-md bg-red px-2.5 py-1 text-[11px] font-bold tracking-wider text-white">
+                    COMING SOON
+                  </span>
+                )}
+              </MediaPlaceholder>
+            )}
             <div class="flex flex-1 flex-col gap-3 p-6">
               <h3 class="heading-display text-[32px]">{s.name}</h3>
               <p class="leading-relaxed text-muted">{s.body}</p>
