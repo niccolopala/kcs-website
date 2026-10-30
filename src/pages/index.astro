@@ -190,14 +190,32 @@ const steps = [
     <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {
         [
-          ['Behind The Brand', 'Episode clip'],
-          ['Dust Bros', 'Product shoot'],
-          ['[Client]', 'Vertical reel'],
-          ['[Client]', 'Cove product shoot'],
-        ].map(([who, what]) => (
-          <div class="flex aspect-[9/16] flex-col justify-end rounded-lg bg-raised p-4 text-sm text-muted">
-            <strong class="text-white">{who}</strong>
-            {what}
+          { who: 'Behind The Brand', what: 'Episode clip' },
+          { who: 'Dust Bros', what: 'Podcast clip', video: '/media/dustbros-podcast' },
+          { who: '[Client]', what: 'Vertical reel' },
+          { who: '[Client]', what: 'Cove product shoot' },
+        ].map((t) => (
+          <div class="relative flex aspect-[9/16] flex-col justify-end overflow-hidden rounded-lg bg-raised p-4 text-sm text-muted">
+            {t.video && (
+              <>
+                <video
+                  class="absolute inset-0 h-full w-full object-cover"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster={`${t.video}.jpg`}
+                  aria-label={`${t.who}: ${t.what}`}
+                >
+                  <source src={`${t.video}.webm`} type="video/webm" />
+                  <source src={`${t.video}.mp4`} type="video/mp4" />
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" aria-hidden="true"></div>
+              </>
+            )}
+            <strong class="relative text-white">{t.who}</strong>
+            <span class:list={['relative', t.video && 'text-soft']}>{t.what}</span>
           </div>
         ))
       }
