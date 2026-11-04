@@ -26,9 +26,34 @@ const year = new Date().getFullYear();
       <a href={site.instagram} class="text-muted hover:text-white" rel="noopener" target="_blank">{site.instagramHandle}</a>
       <a href="/faq" class="text-muted hover:text-white">FAQ</a>
     </div>
-    <div class="flex flex-col gap-2">
-      <strong class="text-white">{site.podcastName} Podcast</strong>
-      <span>Our own show, recorded right here in the studio.</span>
+    <div class="flex flex-col gap-3">
+      <strong class="text-white">Join the list</strong>
+      <span>Open slots, launch offers and the kitchen studio opening. No spam.</span>
+      <!-- Netlify Forms: submissions appear under Forms in the Netlify dashboard as "mailing-list". -->
+      <form
+        name="mailing-list"
+        method="POST"
+        action="/thanks"
+        data-netlify="true"
+        netlify-honeypot="company-website"
+        class="flex flex-col gap-2"
+      >
+        <input type="hidden" name="form-name" value="mailing-list" />
+        <p class="hidden"><label>Leave this empty <input name="company-website" /></label></p>
+        <label for="footer-email" class="sr-only">Email address</label>
+        <div class="flex gap-2">
+          <input
+            id="footer-email"
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@company.com"
+            class="min-w-0 flex-1 rounded-lg border border-[#333] bg-panel px-3 py-3 text-white placeholder:text-muted"
+          />
+          <button type="submit" class="btn shrink-0 bg-red px-4 text-white hover:bg-red-bright">Join</button>
+        </div>
+      </form>
     </div>
   </div>
   <div class="container-kcs border-t border-line py-6 text-xs text-muted">
