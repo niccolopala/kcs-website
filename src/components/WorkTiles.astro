@@ -19,8 +19,15 @@ const { tone = 'dark' } = Astro.props;
   {
     clips.map((t) => (
       <div class="relative flex aspect-[9/16] flex-col justify-end overflow-hidden rounded-lg bg-raised p-4 text-sm">
-        <video
+        <img
+          src={`${t.video}.jpg`}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
           class="absolute inset-0 h-full w-full object-cover"
+        />
+        <video
+          class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500"
           data-autoplay
           autoplay
           muted
@@ -61,11 +68,19 @@ const { tone = 'dark' } = Astro.props;
   // Some browsers (Safari, iOS Low Power Mode) ignore the autoplay attribute.
   // Start muted clips when they scroll into view, and fall back to tap-to-play.
   const clips = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
+  // The video stays invisible until it is actually playing, so a browser that refuses
+  // to play (e.g. Safari on a Mac in Low Power Mode) shows the still image, never a black box.
+  clips.forEach((v) => {
+    const show = () => v.classList.remove('opacity-0');
+    v.addEventListener('playing', show);
+    if (!v.paused && v.readyState >= 3) show();
+  });
   const start = (v: HTMLVideoElement) => {
     v.muted = true;
     v.play().catch(() => {
-      v.addEventListener('click', () => v.play(), { once: true });
-      v.style.cursor = 'pointer';
+      const tile = v.parentElement!;
+      tile.style.cursor = 'pointer';
+      tile.addEventListener('click', () => v.play(), { once: true });
     });
   };
   if ('IntersectionObserver' in window) {
