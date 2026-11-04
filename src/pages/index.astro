@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import MediaPlaceholder from '../components/MediaPlaceholder.astro';
 import coveDoors from '../assets/cove/cove-doors.jpg';
 import kitchenBuild from '../assets/kitchen/kitchen-build.jpg';
+import podcastRender from '../assets/podcast/podcast-render.jpg';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, driveTimes } from '../data/site';
@@ -34,7 +35,9 @@ const studios = [
   {
     name: 'Podcast Studio',
     href: '/podcast-studio',
-    media: 'Hover-to-play clip: podcast set',
+    media: 'CGI render of the podcast studio',
+    image: podcastRender,
+    cgi: true,
     body: 'Up to 4 guests across 3 sets. Sony cameras, pro lighting, an engineer runs it all.',
     bestFor: 'Video podcasts, interviews, founder content',
     price: 'From £295 + VAT / session',
@@ -114,7 +117,7 @@ const steps = [
         studios.map((s) => (
           <article class="hover-lift group flex flex-col overflow-hidden rounded-lg border border-line bg-panel">
             {s.image ? (
-              <div class="h-64 overflow-hidden">
+              <div class="relative h-64 overflow-hidden">
                 <Image
                   src={s.image}
                   alt={`${s.media} at Kent Content Studios`}
@@ -122,6 +125,11 @@ const steps = [
                   sizes="(min-width: 768px) 33vw, 100vw"
                   class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                {s.cgi && (
+                  <span class="absolute left-3.5 top-3.5 rounded-md bg-ink/85 px-2.5 py-1 text-[11px] font-bold tracking-wider text-white">
+                    CGI RENDER · REAL ROOM SOON
+                  </span>
+                )}
               </div>
             ) : (
               <MediaPlaceholder label={s.media} class="h-64 rounded-none">

@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import { Image } from 'astro:assets';
+import { calLinks } from '../data/site';
+import podcastRender from '../assets/podcast/podcast-render.jpg';
 import FaqList from '../components/FaqList.astro';
 import BookingCard from '../components/BookingCard.astro';
 import { allFaqs } from '../data/faq';
@@ -29,13 +32,32 @@ const included = [
   </div>
 
   <!-- Gallery -->
-  <section class="container-kcs grid gap-3 pb-16 pt-8 sm:grid-cols-2 lg:grid-cols-4">
-    <!-- TODO: first tile = 30s sample episode filmed in this room; thumbnails open a lightbox -->
-    <MediaPlaceholder label="▶ Sample episode filmed in this room (multi-cam cut)" class="h-72 sm:col-span-2 md:h-[460px] lg:col-span-4" />
-    <MediaPlaceholder label="Wide set" class="h-40" />
-    <MediaPlaceholder label="Mic and desk detail" class="h-40" />
-    <MediaPlaceholder label="Camera angles" class="h-40" />
-    <MediaPlaceholder label="Green room and arrival" class="h-40" />
+  <!-- TODO: swap the CGI render for real photos and a sample episode once the room is revealed -->
+  <section class="container-kcs grid gap-6 pb-16 pt-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+    <figure class="relative m-0 overflow-hidden rounded-lg bg-raised">
+      <Image
+        src={podcastRender}
+        alt="CGI render of the Kent Content Studios podcast studio: sofa and armchair set with softbox lighting, cameras and plants"
+        widths={[700, 1100, 1448]}
+        sizes="(min-width: 1024px) 60vw, 100vw"
+        loading="eager"
+        class="aspect-[4/3] h-full w-full object-cover"
+      />
+      <span class="absolute left-4 top-4 rounded-md bg-ink/85 px-2.5 py-1.5 text-[11px] font-bold tracking-wider text-white">
+        CGI RENDER
+      </span>
+    </figure>
+    <div class="flex flex-col justify-center gap-4 rounded-lg border border-line-strong border-t-[3px] border-t-red bg-panel p-8">
+      <span class="text-xs font-bold tracking-wider text-red-bright">FIRST LOOK</span>
+      <h2 class="heading-display text-5xl">The real room drops <span class="text-red">next week.</span></h2>
+      <p class="leading-relaxed text-muted">
+        This is a CGI render of the podcast studio. We're putting the finishing touches on the real thing now, and it's
+        going to look just like this. Real photos and a sample episode land next week.
+      </p>
+      <a href={calLinks.tour} class="self-start text-sm font-semibold uppercase tracking-wide text-red-bright hover:text-white"
+        >Book a free tour <span class="arrow">→</span></a
+      >
+    </div>
   </section>
 
   <section class="bg-mist text-ink">
