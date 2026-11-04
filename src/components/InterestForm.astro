@@ -5,10 +5,21 @@ interface Props {
   name: string;
   topic?: string;
   showMessage?: boolean;
+  showCompany?: boolean;
+  /** One line under the button saying how the details are used. */
+  consent?: string;
   submitLabel?: string;
   tone?: 'dark' | 'light';
 }
-const { name, topic, showMessage = true, submitLabel = 'Send', tone = 'dark' } = Astro.props;
+const {
+  name,
+  topic,
+  showMessage = true,
+  showCompany = true,
+  submitLabel = 'Send',
+  tone = 'dark',
+  consent = "We'll only use your details to reply to your enquiry.",
+} = Astro.props;
 const field =
   tone === 'dark'
     ? 'rounded-lg border border-[#333] bg-panel px-4 py-3 text-white placeholder:text-muted'
@@ -32,10 +43,14 @@ const labelCls = tone === 'dark' ? 'text-sm font-semibold' : 'text-sm font-semib
       <input class={field} type="email" name="email" autocomplete="email" required />
     </label>
   </div>
-  <label class="flex flex-col gap-2">
+  {
+    showCompany && (
+      <label class="flex flex-col gap-2">
     <span class={labelCls}>Company <span class="font-normal opacity-70">(optional)</span></span>
     <input class={field} type="text" name="company" autocomplete="organization" />
   </label>
+    )
+  }
   {
     showMessage && (
       <label class="flex flex-col gap-2">
@@ -45,4 +60,7 @@ const labelCls = tone === 'dark' ? 'text-sm font-semibold' : 'text-sm font-semib
     )
   }
   <button type="submit" class="btn self-start bg-red text-white hover:bg-red-bright">{submitLabel}</button>
+  <p class:list={['text-xs leading-relaxed', tone === 'dark' ? 'text-muted' : 'text-subtle']}>
+    {consent} <a href="/privacy" class="underline underline-offset-2">Privacy policy</a>
+  </p>
 </form>

@@ -53,10 +53,16 @@ const year = new Date().getFullYear();
           />
           <button type="submit" class="btn shrink-0 bg-red px-4 text-white hover:bg-red-bright">Join</button>
         </div>
+        <p class="text-xs leading-relaxed text-muted">
+          Unsubscribe any time. <a href="/privacy" class="text-muted underline underline-offset-2 hover:text-white">Privacy policy</a>
+        </p>
       </form>
     </div>
   </div>
   <div class="container-kcs border-t border-line py-6 text-xs text-muted">
-    © {year} {site.name}. All prices exclude VAT.
+    © {year} {site.name}. All prices exclude VAT.<span aria-hidden="true"> · </span><a
+      href="/privacy"
+      class="text-muted hover:text-white">Privacy policy</a
+    >
   </div>
 </footer>
