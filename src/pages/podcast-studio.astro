@@ -9,7 +9,7 @@ import { podcastAddOns, podcastPlans, podcastBookings } from '../data/pricing';
 const faqs = allFaqs.filter((f) => f.podcast);
 
 const included = [
-  ['Cameras', 'Sony FX30 × 3, Sigma primes'],
+  ['Cameras', 'Sony cameras, premium lenses'],
   ['Audio', 'Rode broadcast microphones'],
   ['Lighting', 'Pre-set key, fill and practicals'],
   ['Engineer', 'Nick or James runs the kit for you'],
@@ -21,7 +21,7 @@ const included = [
 
 <Base
   title="Podcast Studio Hire in Kent | Kent Content Studios"
-  description="Three-camera video podcast studio in Cranbrook, Kent. Sony FX30s, pro lighting and an engineer included. Sessions from £295 + VAT, finished episodes from £595."
+  description="Three-camera video podcast studio in Cranbrook, Kent. Sony cameras, pro lighting and an engineer included. Sessions from £295 + VAT, finished episodes from £595."
   current="/podcast-studio"
 >
   <div class="container-kcs pt-5 text-[13px] text-muted">
@@ -44,12 +44,12 @@ const included = [
         <div class="flex flex-col gap-4">
           <h1 class="heading-display text-7xl md:text-[88px]">The Podcast <span class="text-red">Studio.</span></h1>
           <p class="max-w-2xl text-lg leading-relaxed text-subtle">
-            Choice of three sets, three Sony FX30s, pro lighting and an engineer who runs it all. Sit down, press
+            Choice of three sets, Sony cameras with premium lenses, pro lighting and an engineer who runs it all. Sit down, press
             record, walk out with a finished episode.
           </p>
           <ul class="flex flex-wrap gap-2.5 text-[13px] font-medium">
             {
-              ['Up to 4 guests', 'Choice of 3 sets', '3 × Sony FX30', 'Engineer included', 'Free parking'].map((t) => (
+              ['Up to 4 guests', 'Choice of 3 sets', 'Sony cameras', 'Engineer included', 'Free parking'].map((t) => (
                 <li class="rounded-lg border border-card-line bg-white px-3.5 py-2">{t}</li>
               ))
             }
