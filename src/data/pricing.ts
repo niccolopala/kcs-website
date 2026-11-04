@@ -6,7 +6,7 @@ export const podcastPlans = [
     name: 'Studio Session',
     price: '£295',
     unit: '',
-    body: 'Two hours. Engineer, three cameras, lighting. Raw files and a synced multi-cam master within 48 hours.',
+    body: 'Two hours. Engineer, multi-camera setup, lighting. Raw files and a synced multi-cam master within 48 hours.',
     forWho: 'For teams with their own editor',
     cta: 'Book a session',
     href: calLinks.studioSession,
