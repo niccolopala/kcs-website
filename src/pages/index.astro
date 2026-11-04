@@ -198,7 +198,7 @@ const steps = [
     <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {
         [
-          { who: 'Behind The Brand', what: 'Episode clip' },
+          { who: 'Behind The Brand', what: 'Episode clip', video: '/media/btb-dustbros' },
           { who: 'Dust Bros', what: 'Podcast clip', video: '/media/dustbros-podcast' },
           { who: '[Client]', what: 'Vertical reel' },
           { who: '[Client]', what: 'Cove product shoot' },
@@ -208,15 +208,16 @@ const steps = [
               <>
                 <video
                   class="absolute inset-0 h-full w-full object-cover"
+                  data-autoplay
                   autoplay
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  disablepictureinpicture
+                  preload="auto"
                   poster={`${t.video}.jpg`}
                   aria-label={`${t.who}: ${t.what}`}
                 >
-                  <source src={`${t.video}.webm`} type="video/webm" />
                   <source src={`${t.video}.mp4`} type="video/mp4" />
                 </video>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" aria-hidden="true"></div>
@@ -380,4 +381,29 @@ const steps = [
   </section>
 
   <CtaBand />
+
+<script>
+  // Some browsers (Safari, iOS Low Power Mode) ignore the autoplay attribute.
+  // Start muted clips when they scroll into view, and fall back to tap-to-play.
+  const clips = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
+  const start = (v: HTMLVideoElement) => {
+    v.muted = true;
+    v.play().catch(() => {
+      v.addEventListener('click', () => v.play(), { once: true });
+      v.style.cursor = 'pointer';
+    });
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) start(v);
+        else v.pause();
+      });
+    }, { threshold: 0.25 });
+    clips.forEach((v) => io.observe(v));
+  } else {
+    clips.forEach(start);
+  }
+</script>
 </Base>
