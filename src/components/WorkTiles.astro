@@ -1,0 +1,86 @@
+---
+import { calLinks } from '../data/site';
+
+// Clips shown in "Made at KCS" (home) and "Recorded here" (Podcast Studio).
+// Each `video` is a path in /public/media without extension; needs .mp4 and .jpg (poster).
+// Add a new clip here and it appears in both places.
+export const clips = [
+  { who: 'Behind The Brand', what: 'Episode clip', video: '/media/btb-dustbros' },
+  { who: 'Dust Bros', what: 'Podcast clip', video: '/media/dustbros-podcast' },
+];
+
+interface Props {
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+---
+
+<div class="grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3">
+  {
+    clips.map((t) => (
+      <div class="relative flex aspect-[9/16] flex-col justify-end overflow-hidden rounded-lg bg-raised p-4 text-sm">
+        <video
+          class="absolute inset-0 h-full w-full object-cover"
+          data-autoplay
+          autoplay
+          muted
+          loop
+          playsinline
+          disablepictureinpicture
+          preload="auto"
+          poster={`${t.video}.jpg`}
+          aria-label={`${t.who}: ${t.what}`}
+        >
+          <source src={`${t.video}.mp4`} type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" aria-hidden="true" />
+        <strong class="relative text-white">{t.who}</strong>
+        <span class="relative text-soft">{t.what}</span>
+      </div>
+    ))
+  }
+  <a
+    href={calLinks.episodePackage}
+    class:list={[
+      'hover-lift col-span-2 flex flex-col justify-end gap-3 rounded-lg border-2 border-dashed p-5 no-underline sm:col-span-1 sm:aspect-[9/16]',
+      tone === 'dark' ? 'border-line-strong bg-panel' : 'border-rule bg-white',
+    ]}
+  >
+    <span class="text-xs font-bold tracking-wider text-red-bright">NEXT UP</span>
+    <span class:list={['heading-display text-4xl', tone === 'dark' ? 'text-white' : 'text-ink']}>
+      Your show <span class="text-red">here.</span>
+    </span>
+    <span class:list={['text-sm leading-relaxed', tone === 'dark' ? 'text-muted' : 'text-subtle']}>
+      Finished episode and 5 clips from £595 + VAT.
+    </span>
+    <span class="text-sm font-semibold uppercase tracking-wide text-red-bright">Book a session <span class="arrow">→</span></span>
+  </a>
+</div>
+
+<script>
+  // Some browsers (Safari, iOS Low Power Mode) ignore the autoplay attribute.
+  // Start muted clips when they scroll into view, and fall back to tap-to-play.
+  const clips = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
+  const start = (v: HTMLVideoElement) => {
+    v.muted = true;
+    v.play().catch(() => {
+      v.addEventListener('click', () => v.play(), { once: true });
+      v.style.cursor = 'pointer';
+    });
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) start(v);
+          else v.pause();
+        });
+      },
+      { threshold: 0.25 },
+    );
+    clips.forEach((v) => io.observe(v));
+  } else {
+    clips.forEach(start);
+  }
+</script>

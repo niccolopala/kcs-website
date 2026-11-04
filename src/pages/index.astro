@@ -7,6 +7,7 @@ import kitchenBuild from '../assets/kitchen/kitchen-build.jpg';
 import podcastRender from '../assets/podcast/podcast-render.jpg';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
+import WorkTiles from '../components/WorkTiles.astro';
 import { site, driveTimes } from '../data/site';
 import { allFaqs } from '../data/faq';
 import { podcastPlans, podcastExtras, covePrices } from '../data/pricing';
@@ -195,48 +196,7 @@ const steps = [
   <!-- Work -->
   <section id="work" class="container-kcs flex flex-col gap-10 py-24 md:py-28">
     <h2 class="heading-display text-5xl md:text-6xl">Made at <span class="text-red">KCS.</span></h2>
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {
-        [
-          { who: 'Behind The Brand', what: 'Episode clip', video: '/media/btb-dustbros' },
-          { who: 'Dust Bros', what: 'Podcast clip', video: '/media/dustbros-podcast' },
-          { who: '[Client]', what: 'Vertical reel' },
-          { who: '[Client]', what: 'Cove product shoot' },
-        ].map((t) => (
-          <div class="relative flex aspect-[9/16] flex-col justify-end overflow-hidden rounded-lg bg-raised p-4 text-sm text-muted">
-            {t.video && (
-              <>
-                <video
-                  class="absolute inset-0 h-full w-full object-cover"
-                  data-autoplay
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  disablepictureinpicture
-                  preload="auto"
-                  poster={`${t.video}.jpg`}
-                  aria-label={`${t.who}: ${t.what}`}
-                >
-                  <source src={`${t.video}.mp4`} type="video/mp4" />
-                </video>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0" aria-hidden="true"></div>
-              </>
-            )}
-            <strong class="relative text-white">{t.who}</strong>
-            <span class:list={['relative', t.video && 'text-soft']}>{t.what}</span>
-          </div>
-        ))
-      }
-    </div>
-    <!-- TODO: replace with a real client quote once the first sessions are done -->
-    <figure class="flex flex-wrap items-center gap-6 rounded-lg border border-line bg-panel p-8">
-      <div class="h-16 w-16 shrink-0 rounded-full bg-raised" aria-hidden="true"></div>
-      <div class="flex min-w-0 flex-1 flex-col gap-1.5">
-        <blockquote class="text-xl leading-relaxed">"[Client quote: one sentence, with a specific outcome.]"</blockquote>
-        <figcaption class="text-sm text-muted">[Name], [Role], [Company]</figcaption>
-      </div>
-    </figure>
+    <WorkTiles />
   </section>
 
   <!-- How it works -->
@@ -382,28 +342,4 @@ const steps = [
 
   <CtaBand />
 
-<script>
-  // Some browsers (Safari, iOS Low Power Mode) ignore the autoplay attribute.
-  // Start muted clips when they scroll into view, and fall back to tap-to-play.
-  const clips = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
-  const start = (v: HTMLVideoElement) => {
-    v.muted = true;
-    v.play().catch(() => {
-      v.addEventListener('click', () => v.play(), { once: true });
-      v.style.cursor = 'pointer';
-    });
-  };
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        const v = e.target as HTMLVideoElement;
-        if (e.isIntersecting) start(v);
-        else v.pause();
-      });
-    }, { threshold: 0.25 });
-    clips.forEach((v) => io.observe(v));
-  } else {
-    clips.forEach(start);
-  }
-</script>
 </Base>

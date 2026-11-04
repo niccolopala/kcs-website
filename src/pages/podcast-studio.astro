@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import WorkTiles from '../components/WorkTiles.astro';
 import { Image } from 'astro:assets';
 import { calLinks } from '../data/site';
 import podcastRender from '../assets/podcast/podcast-render.jpg';
@@ -135,11 +135,7 @@ const included = [
 
         <div class="flex flex-col gap-5">
           <h2 class="heading-display text-[44px]">Recorded <span class="text-red">here.</span></h2>
-          <div class="grid gap-3 sm:grid-cols-3">
-            <MediaPlaceholder label="Behind The Brand · episode clip" class="h-44" />
-            <MediaPlaceholder label="[Show name] · episode" class="h-44" />
-            <MediaPlaceholder label="[Show name] · episode" class="h-44" />
-          </div>
+          <WorkTiles tone="light" />
         </div>
 
         <div class="flex flex-col gap-5">
