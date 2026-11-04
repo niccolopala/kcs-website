@@ -6,6 +6,8 @@ interface Props {
   topic?: string;
   showMessage?: boolean;
   showCompany?: boolean;
+  /** Space, preferred date, length and group size, for booking requests. */
+  showBooking?: boolean;
   /** One line under the button saying how the details are used. */
   consent?: string;
   submitLabel?: string;
@@ -16,6 +18,7 @@ const {
   topic,
   showMessage = true,
   showCompany = true,
+  showBooking = false,
   submitLabel = 'Send',
   tone = 'dark',
   consent = "We'll only use your details to reply to your enquiry.",
@@ -49,6 +52,39 @@ const labelCls = tone === 'dark' ? 'text-sm font-semibold' : 'text-sm font-semib
     <span class={labelCls}>Company <span class="font-normal opacity-70">(optional)</span></span>
     <input class={field} type="text" name="company" autocomplete="organization" />
   </label>
+    )
+  }
+  {
+    showBooking && (
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class="flex flex-col gap-2">
+          <span class={labelCls}>Which space?</span>
+          <select class={field} name="space">
+            <option>White Infinity Room</option>
+            <option>Podcast Studio</option>
+            <option>Both</option>
+            <option>Not sure yet</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-2">
+          <span class={labelCls}>Preferred date <span class="font-normal opacity-70">(optional)</span></span>
+          <input class={field} type="date" name="preferred-date" />
+        </label>
+        <label class="flex flex-col gap-2">
+          <span class={labelCls}>How long?</span>
+          <select class={field} name="duration">
+            <option>2 hours</option>
+            <option>3–4 hours</option>
+            <option>Half day</option>
+            <option>Full day</option>
+            <option>Not sure yet</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-2">
+          <span class={labelCls}>How many people?</span>
+          <input class={field} type="number" name="people" min="1" max="10" inputmode="numeric" />
+        </label>
+      </div>
     )
   }
   {
