@@ -3,9 +3,9 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 
 // Update this date whenever the policy changes.
-const updated = '4 November 2026';
+const updated = '5 November 2026';
 
-const sections: { h: string; body: string[] }[] = [
+const sections: { h: string; id?: string; body: string[] }[] = [
   {
     h: 'Who we are',
     body: [
@@ -20,7 +20,15 @@ const sections: { h: string; body: string[] }[] = [
       'Mailing list and kitchen studio interest: your email address, and your name if you give it.',
       'Bookings: your name, email address, phone number, company, the number of people and cars you are bringing, and anything you tell us about access needs. Access needs can include health information; we only use it to make your visit work for you, and only if you choose to tell us.',
       'Payments: deposits are taken by our payment provider. We never see or store your full card details.',
-      'We do not use advertising or analytics cookies on this website.',
+    ],
+  },
+  {
+    h: 'Cookies',
+    id: 'cookies',
+    body: [
+      'We only set one kind of non-essential cookie: Google Ads cookies, which tell us when someone reached our site from one of our ads and then got in touch. They are only set if you click Accept on our cookie banner.',
+      'If you decline, no advertising cookies are set and the site works exactly the same. We remember your choice in your browser so we do not keep asking. You can change your mind at any time with the "Cookie settings" link at the bottom of every page.',
+      'We do not use any other analytics or tracking cookies.',
     ],
   },
   {
@@ -36,7 +44,7 @@ const sections: { h: string; body: string[] }[] = [
     h: 'Who we share it with',
     body: [
       'We never sell your information. We share it only with the services that help us run KCS:',
-      'Netlify (hosts this website and receives form submissions), Cal.com (online booking), our payment provider (deposits), our email provider (business email) and, if you join our mailing list, the service we use to send it.',
+      'Netlify (hosts this website and receives form submissions), Resend (sends us an email for each form submission), Cal.com (online booking), Google (advertising, only if you accept cookies), our payment provider (deposits), our email provider (business email) and, if you join our mailing list, the service we use to send it.',
       'Some of these providers store data outside the UK, including in the United States. Where they do, they protect it with the safeguards UK data protection law requires, such as the UK International Data Transfer Addendum or Standard Contractual Clauses.',
     ],
   },
@@ -79,7 +87,7 @@ const sections: { h: string; body: string[] }[] = [
       </p>
       {
         sections.map((s) => (
-          <div class="flex flex-col gap-3">
+          <div id={s.id} class="flex scroll-mt-28 flex-col gap-3">
             <h2 class="heading-display text-4xl">{s.h}</h2>
             {s.body.map((p) => (
               <p class="leading-relaxed text-body">{p}</p>

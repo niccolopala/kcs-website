@@ -1,0 +1,69 @@
+---
+import { site } from '../data/site';
+// Google Ads loads only after the visitor clicks Accept (UK GDPR / PECR).
+// The choice is kept in localStorage; "Cookie settings" in the footer reopens this banner.
+---
+
+<div
+  id="cookie-banner"
+  hidden
+  role="dialog"
+  aria-label="Cookie choice"
+  class="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl flex-col gap-4 rounded-lg border border-line-strong bg-panel p-5 text-sm shadow-2xl sm:flex-row sm:items-center"
+>
+  <p class="leading-relaxed text-soft">
+    We'd like to use cookies to see which of our Google ads bring people here. Nothing else.{' '}
+    <a href="/privacy#cookies" class="underline underline-offset-2 hover:text-white">More info</a>
+  </p>
+  <div class="flex shrink-0 gap-2">
+    <button type="button" data-consent="denied" class="btn border border-edge px-4 py-2.5 text-white hover:border-white">Decline</button>
+    <button type="button" data-consent="granted" class="btn bg-red px-4 py-2.5 text-white hover:bg-red-bright">Accept</button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ adsId: site.googleAdsId }}>
+  (function () {
+    var KEY = 'kcs-cookie-consent';
+    var banner = document.getElementById('cookie-banner');
+    var read = function () {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    };
+    var save = function (v) {
+      try { localStorage.setItem(KEY, v); } catch (e) {}
+    };
+    var loadAds = function () {
+      if (!adsId || window.__kcsAdsLoaded) return;
+      window.__kcsAdsLoaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('consent', 'default', {
+        ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'denied'
+      });
+      window.gtag('js', new Date());
+      window.gtag('config', adsId);
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + adsId;
+      document.head.appendChild(s);
+      document.dispatchEvent(new Event('kcs:ads-ready'));
+    };
+    var choice = read();
+    if (choice === 'granted') loadAds();
+    else if (choice !== 'denied') banner.hidden = false;
+
+    banner.addEventListener('click', function (e) {
+      var v = e.target.closest('[data-consent]');
+      if (!v) return;
+      var c = v.getAttribute('data-consent');
+      save(c);
+      banner.hidden = true;
+      if (c === 'granted') loadAds();
+    });
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-cookie-settings]')) {
+        e.preventDefault();
+        banner.hidden = false;
+      }
+    });
+  })();
+</script>

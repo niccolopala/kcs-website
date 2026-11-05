@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
 ---
 
 <Base title="Thanks | Kent Content Studios" description="Thanks for getting in touch with Kent Content Studios.">
@@ -9,3 +10,13 @@ import Base from '../layouts/Base.astro';
     <a href="/" class="btn bg-red text-white hover:bg-red-bright">Back to home</a>
   </section>
 </Base>
+
+<script is:inline define:vars={{ conversion: site.googleAdsEnquiryConversion }}>
+  // Counts an enquiry as a Google Ads conversion, only if the visitor accepted cookies.
+  (function () {
+    if (!conversion) return;
+    var fire = function () { window.gtag && window.gtag('event', 'conversion', { send_to: conversion }); };
+    if (window.__kcsAdsLoaded) fire();
+    else document.addEventListener('kcs:ads-ready', fire, { once: true });
+  })();
+</script>

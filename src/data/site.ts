@@ -5,6 +5,11 @@ export const site = {
   email: 'hello@kentcontentstudios.com',
   instagram: 'https://www.instagram.com/kentcontentstudios',
   instagramHandle: '@kentcontentstudios',
+  // Google Ads tag. Only loads after a visitor accepts cookies (see CookieBanner).
+  googleAdsId: 'AW-18558782023',
+  // Conversion label from Google Ads → Goals → Conversions, e.g. 'AW-18558782023/AbC-dEfGhIj'.
+  // Fired on /thanks after an enquiry. Leave empty until the conversion action exists.
+  googleAdsEnquiryConversion: '',
   podcastName: 'Behind The Brand',
   address: {
     line1: 'The Feed Store, Lynx Park Business Centre',
