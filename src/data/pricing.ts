@@ -54,6 +54,13 @@ export const podcastAddOns = [
   { name: 'Second episode, same session', detail: 'edit + 5 clips', price: '£295' },
 ];
 
+// Infinity Room: paid in full on booking (prices shown ex VAT).
+export const coveBookings = [
+  { name: '2 hours', detail: 'any time 9:00–16:00 start', price: '£80', href: calLinks.coveTwoHours },
+  { name: 'Half day', detail: '4 hrs · morning or afternoon', price: '£140', href: calLinks.coveHalfDay, featured: true },
+  { name: 'Full day', detail: '8 hrs · 9:00–17:00', price: '£270', href: calLinks.coveFullDay },
+];
+
 export const covePrices = [
   { label: 'Per hour', note: '2 hour minimum', price: '£40' },
   { label: 'Half day', note: '4 hours', price: '£140' },

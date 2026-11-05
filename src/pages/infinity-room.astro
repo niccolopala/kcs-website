@@ -6,7 +6,8 @@ import coveDoors from '../assets/cove/cove-doors.jpg';
 import FaqList from '../components/FaqList.astro';
 import BookingCard from '../components/BookingCard.astro';
 import { allFaqs } from '../data/faq';
-import { covePrices } from '../data/pricing';
+import { covePrices, coveBookings } from '../data/pricing';
+import { site } from '../data/site';
 
 const faqs = allFaqs.filter((f) => f.cove);
 
@@ -106,6 +107,10 @@ const specs = [
         unit="/ hour + VAT"
         note="2 hour minimum. Half day £140, full day £270."
         points={['Team on site throughout', 'Bring your own crew and kit', 'Lights and backdrops to hire']}
+        options={coveBookings}
+        payment="Prices + VAT. Pay in full to secure your slot."
+        terms={['Shoes off or overshoes on the cove floor.', 'Up to 10 people.']}
+        altLink={{ label: 'Booking for a company and need an invoice? Send an enquiry', href: `${site.bookingUrl}#enquire` }}
       />
     </div>
   </section>

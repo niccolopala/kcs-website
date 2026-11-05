@@ -10,8 +10,23 @@ interface Props {
   points: string[];
   /** Podcast Studio: list of Cal.com packages. Omit to fall back to the enquiry form (Infinity Room). */
   options?: Option[];
+  /** Line under the package list. */
+  payment?: string;
+  /** Small print at the bottom of the card. */
+  terms?: string[];
+  /** Optional link under the packages, e.g. invoice bookings via the enquiry form. */
+  altLink?: { label: string; href: string };
 }
-const { from, unit, note, points, options } = Astro.props;
+const {
+  from,
+  unit,
+  note,
+  points,
+  options,
+  payment = 'Prices + VAT. Pay a 50% deposit to secure your slot.',
+  terms = ['Balance due 48 hours before your session.', "One free reschedule with 48 hours' notice."],
+  altLink,
+} = Astro.props;
 ---
 
 <aside
@@ -45,7 +60,12 @@ const { from, unit, note, points, options } = Astro.props;
             <span class="whitespace-nowrap text-sm font-semibold text-white">{o.price} <span class="arrow">→</span></span>
           </a>
         ))}
-        <p class="pt-1 text-xs text-muted">Prices + VAT. Pay a 50% deposit to secure your slot.</p>
+        <p class="pt-1 text-xs text-muted">{payment}</p>
+        {altLink && (
+          <a href={altLink.href} class="text-xs text-soft underline underline-offset-2 hover:text-white">
+            {altLink.label}
+          </a>
+        )}
       </div>
     ) : (
       <>
@@ -67,7 +87,7 @@ const { from, unit, note, points, options } = Astro.props;
   }
 
   <p class="text-center text-[13px] leading-relaxed text-muted">
-    Balance due 48 hours before your session.<br />One free reschedule with 48 hours' notice.
+    {terms.map((t, i) => (i === 0 ? t : <><br />{t}</>))}
   </p>
   <a href={calLinks.tour} class="text-center text-sm text-red-bright hover:text-white">Or book a free tour first</a>
 </aside>

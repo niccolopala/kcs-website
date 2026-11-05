@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import InterestForm from '../components/InterestForm.astro';
 import { site, calLinks } from '../data/site';
-import { podcastBookings } from '../data/pricing';
+import { podcastBookings, coveBookings } from '../data/pricing';
 ---
 
 <Base
@@ -14,13 +14,13 @@ import { podcastBookings } from '../data/pricing';
     <div class="container-kcs flex flex-col gap-5 pb-14 pt-24">
       <h1 class="heading-display text-7xl md:text-[96px]">Let's get you <span class="text-red">booked.</span></h1>
       <p class="max-w-2xl text-lg leading-relaxed text-muted">
-        Book the podcast studio online, request the infinity room, or come and see the space first.
+        Book the podcast studio or the infinity room online, or come and see the space first.
       </p>
     </div>
   </section>
 
   <!-- Booking options -->
-  <section class="container-kcs grid gap-5 pb-20 lg:grid-cols-3">
+  <section class="container-kcs grid items-start gap-5 pb-20 lg:grid-cols-3">
     <div class="flex flex-col gap-4 rounded-lg border-2 border-red bg-panel p-7 lg:col-span-2">
       <div class="flex flex-col gap-1">
         <h2 class="heading-display text-4xl">Podcast <span class="text-red">Studio</span></h2>
@@ -47,11 +47,24 @@ import { podcastBookings } from '../data/pricing';
       </div>
     </div>
     <div class="flex flex-col gap-4">
-      <a href="#enquire" class="hover-lift flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline">
-        <h2 class="heading-display text-3xl text-white">White Infinity Room</h2>
-        <p class="text-sm text-muted">From £40/hr + VAT. Send a request and we'll confirm your slot.</p>
-        <span class="mt-auto text-sm font-semibold uppercase tracking-wide text-red-bright">Request a booking <span class="arrow">→</span></span>
-      </a>
+      <div class="flex flex-1 flex-col gap-3 rounded-lg border border-line bg-panel p-7">
+        <div class="flex flex-col gap-1">
+          <h2 class="heading-display text-3xl text-white">White Infinity Room</h2>
+          <p class="text-sm text-muted">Dry hire. Pay in full to secure your slot. Prices + VAT.</p>
+        </div>
+        {
+          coveBookings.map((o) => (
+            <a href={o.href} class="hover-lift flex items-center justify-between gap-3 rounded-lg border border-line-strong bg-ink px-4 py-3 no-underline">
+              <span class="flex flex-col">
+                <strong class="text-[15px] text-white">{o.name}</strong>
+                <span class="text-xs text-muted">{o.detail}</span>
+              </span>
+              <span class="whitespace-nowrap text-sm font-semibold text-white">{o.price} <span class="arrow">→</span></span>
+            </a>
+          ))
+        }
+        <a href="#enquire" class="text-xs text-soft underline underline-offset-2 hover:text-white">Need an invoice for your company? Send an enquiry</a>
+      </div>
       <a href={calLinks.tour} class="hover-lift flex flex-1 flex-col gap-2 rounded-lg border border-line bg-panel p-7 no-underline">
         <h2 class="heading-display text-3xl text-white">Free studio tour</h2>
         <p class="text-sm text-muted">20 minutes to see the sets and talk through your project.</p>
@@ -64,9 +77,9 @@ import { podcastBookings } from '../data/pricing';
     <div class="container-kcs grid items-start gap-12 py-16 md:py-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-2">
-          <h2 class="heading-display text-[44px]">Infinity Room requests and enquiries</h2>
+          <h2 class="heading-display text-[44px]">Enquiries and company bookings</h2>
           <p class="text-subtle">
-            Tell us the date, how long you need and what you're shooting. Content Plans and bigger productions too.
+            Questions, Content Plans, bigger productions, or a booking you need invoiced. Tell us the date, how long you need and what you're shooting.
             We'll reply within one working day.
           </p>
         </div>
