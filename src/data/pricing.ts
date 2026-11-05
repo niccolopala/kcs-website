@@ -62,7 +62,7 @@ export const coveBookings = [
 ];
 
 export const covePrices = [
-  { label: 'Per hour', note: '2 hour minimum', price: '£40' },
-  { label: 'Half day', note: '4 hours', price: '£140' },
-  { label: 'Full day', note: '8 hours', price: '£270' },
+  { label: 'Per hour', note: '2 hour minimum', price: '£40', href: calLinks.coveTwoHours },
+  { label: 'Half day', note: '4 hours', price: '£140', href: calLinks.coveHalfDay },
+  { label: 'Full day', note: '8 hours', price: '£270', href: calLinks.coveFullDay },
 ];

@@ -271,15 +271,20 @@ const steps = [
       <div class="grid gap-4 sm:grid-cols-3">
         {
           covePrices.map((c) => (
-            <div class="flex flex-col gap-1.5 rounded-lg border border-line bg-panel p-6">
+            <a href={c.href} class="hover-lift flex flex-col gap-1.5 rounded-lg border border-line bg-panel p-6 no-underline hover:border-edge">
               <span class="text-[13px] text-muted">
                 {c.label} · {c.note}
               </span>
-              <span class="heading-display text-5xl">{c.price}</span>
-            </div>
+              <span class="heading-display text-5xl text-white">{c.price}</span>
+              <span class="mt-2 text-sm font-semibold uppercase tracking-wide text-red-bright">Book <span class="arrow">→</span></span>
+            </a>
           ))
         }
       </div>
+      <p class="text-sm text-muted">
+        Pay in full to secure your slot. Booking for a company and need an invoice?{' '}
+        <a href="/contact#enquire" class="text-soft underline underline-offset-2 hover:text-white">Send an enquiry</a>.
+      </p>
     </div>
 
     <div
