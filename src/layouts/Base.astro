@@ -21,6 +21,28 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
 <html lang="en-GB">
   <head>
     <meta charset="utf-8" />
+    {
+      site.googleAdsId && (
+        <>
+          {/* Google Ads with Consent Mode v2: no ad cookies until the visitor clicks Accept (CookieBanner). */}
+          <script is:inline define:vars={{ adsId: site.googleAdsId }}>
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            var granted = false;
+            try { granted = localStorage.getItem('kcs-cookie-consent') === 'granted'; } catch (e) {}
+            window.gtag('consent', 'default', {
+              ad_storage: granted ? 'granted' : 'denied',
+              ad_user_data: granted ? 'granted' : 'denied',
+              ad_personalization: granted ? 'granted' : 'denied',
+              analytics_storage: 'denied',
+            });
+            window.gtag('js', new Date());
+            window.gtag('config', adsId);
+          </script>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAdsId}`} />
+        </>
+      )
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />

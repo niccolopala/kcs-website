@@ -12,11 +12,10 @@ import { site } from '../data/site';
 </Base>
 
 <script is:inline define:vars={{ conversion: site.googleAdsEnquiryConversion }}>
-  // Counts an enquiry as a Google Ads conversion, only if the visitor accepted cookies.
+  // Counts an enquiry as a Google Ads conversion, respecting the visitor's cookie choice.
   (function () {
     if (!conversion) return;
-    var fire = function () { window.gtag && window.gtag('event', 'conversion', { send_to: conversion }); };
-    if (window.__kcsAdsLoaded) fire();
-    else document.addEventListener('kcs:ads-ready', fire, { once: true });
+    // Consent Mode decides what Google may store; without consent no cookies are used.
+    if (window.gtag) window.gtag('event', 'conversion', { send_to: conversion });
   })();
 </script>

@@ -1,6 +1,5 @@
 ---
-import { site } from '../data/site';
-// Google Ads loads only after the visitor clicks Accept (UK GDPR / PECR).
+// Google Ads runs in Consent Mode (see Base.astro): no ad cookies until the visitor clicks Accept.
 // The choice is kept in localStorage; "Cookie settings" in the footer reopens this banner.
 ---
 
@@ -21,43 +20,23 @@ import { site } from '../data/site';
   </div>
 </div>
 
-<script is:inline define:vars={{ adsId: site.googleAdsId }}>
+<script is:inline>
   (function () {
     var KEY = 'kcs-cookie-consent';
     var banner = document.getElementById('cookie-banner');
-    var read = function () {
-      try { return localStorage.getItem(KEY); } catch (e) { return null; }
-    };
-    var save = function (v) {
-      try { localStorage.setItem(KEY, v); } catch (e) {}
-    };
-    var loadAds = function () {
-      if (!adsId || window.__kcsAdsLoaded) return;
-      window.__kcsAdsLoaded = true;
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () { window.dataLayer.push(arguments); };
-      window.gtag('consent', 'default', {
-        ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'denied'
-      });
-      window.gtag('js', new Date());
-      window.gtag('config', adsId);
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + adsId;
-      document.head.appendChild(s);
-      document.dispatchEvent(new Event('kcs:ads-ready'));
-    };
-    var choice = read();
-    if (choice === 'granted') loadAds();
-    else if (choice !== 'denied') banner.hidden = false;
+    var choice = null;
+    try { choice = localStorage.getItem(KEY); } catch (e) {}
+    if (choice !== 'granted' && choice !== 'denied') banner.hidden = false;
 
     banner.addEventListener('click', function (e) {
-      var v = e.target.closest('[data-consent]');
-      if (!v) return;
-      var c = v.getAttribute('data-consent');
-      save(c);
+      var btn = e.target.closest('[data-consent]');
+      if (!btn) return;
+      var c = btn.getAttribute('data-consent');
+      try { localStorage.setItem(KEY, c); } catch (err) {}
       banner.hidden = true;
-      if (c === 'granted') loadAds();
+      if (window.gtag) {
+        window.gtag('consent', 'update', { ad_storage: c, ad_user_data: c, ad_personalization: c });
+      }
     });
     document.addEventListener('click', function (e) {
       if (e.target.closest('[data-cookie-settings]')) {
