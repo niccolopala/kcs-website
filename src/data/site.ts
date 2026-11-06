@@ -10,6 +10,8 @@ export const site = {
   // Conversion label from Google Ads → Goals → Conversions, e.g. 'AW-18558782023/AbC-dEfGhIj'.
   // Fired on /thanks after an enquiry. Leave empty until the conversion action exists.
   googleAdsEnquiryConversion: 'AW-18558782023/PdCiCNmytbMdEMeUwpFF',
+  // Fired when someone clicks through to a Cal.com booking page.
+  googleAdsBookingConversion: 'AW-18558782023/PLXFCNfitrMdEMeUwpFF',
   podcastName: 'Behind The Brand',
   address: {
     line1: 'The Feed Store, Lynx Park Business Centre',

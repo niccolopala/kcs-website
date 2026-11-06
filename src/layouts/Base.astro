@@ -73,5 +73,25 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
     </main>
     <Footer />
     <CookieBanner />
+    {
+      site.googleAdsBookingConversion && (
+        <script is:inline define:vars={{ conversion: site.googleAdsBookingConversion }}>
+          // Counts a click on any Cal.com booking link as a Google Ads "Booking click" conversion.
+          // Navigation waits for Google to confirm (max 400ms) so the hit isn't lost.
+          document.addEventListener('click', function (e) {
+            var a = e.target.closest && e.target.closest('a[href*="cal.com/"]');
+            if (!a || !window.gtag) return;
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') {
+              window.gtag('event', 'conversion', { send_to: conversion, transport_type: 'beacon' });
+              return;
+            }
+            e.preventDefault();
+            var go = function () { if (!go.done) { go.done = true; window.location.href = a.href; } };
+            window.gtag('event', 'conversion', { send_to: conversion, transport_type: 'beacon', event_callback: go });
+            setTimeout(go, 400);
+          });
+        </script>
+      )
+    }
   </body>
 </html>
