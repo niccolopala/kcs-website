@@ -9,7 +9,7 @@ export const site = {
   googleAdsId: 'AW-18558782023',
   // Conversion label from Google Ads → Goals → Conversions, e.g. 'AW-18558782023/AbC-dEfGhIj'.
   // Fired on /thanks after an enquiry. Leave empty until the conversion action exists.
-  googleAdsEnquiryConversion: '',
+  googleAdsEnquiryConversion: 'AW-18558782023/PdCiCNmytbMdEMeUwpFF',
   podcastName: 'Behind The Brand',
   address: {
     line1: 'The Feed Store, Lynx Park Business Centre',
