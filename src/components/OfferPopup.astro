@@ -1,0 +1,140 @@
+---
+import { offer } from '../data/site';
+// First-booking offer popup. Shows once per visitor, after a delay or some scrolling,
+// never on the thanks / privacy / 404 pages. Submits to the Netlify form "first-booking-offer"
+// in the background (no page change, so it is NOT counted as an enquiry conversion).
+// The submission-created function emails the visitor their code.
+---
+
+<div id="offer-popup" hidden class="fixed inset-0 z-[60] flex items-end justify-center bg-black/70 p-4 sm:items-center">
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="offer-title"
+    class="relative w-full max-w-md rounded-lg border border-line-strong border-t-[3px] border-t-red bg-panel p-7 shadow-2xl"
+  >
+    <button
+      type="button"
+      data-offer-close
+      aria-label="Close"
+      class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg text-xl text-muted hover:text-white"
+      >×</button
+    >
+
+    <div data-offer-step="form" class="flex flex-col gap-4">
+      <span class="text-xs font-bold tracking-wider text-red-bright">FIRST BOOKING</span>
+      <h2 id="offer-title" class="heading-display text-5xl leading-none">
+        {offer.headline} <span class="text-red">{offer.headlineAccent}</span>
+      </h2>
+      <p class="text-sm leading-relaxed text-soft">{offer.body}</p>
+      <form
+        name="first-booking-offer"
+        method="POST"
+        action="/"
+        data-netlify="true"
+        netlify-honeypot="company-website"
+        class="flex flex-col gap-3"
+      >
+        <input type="hidden" name="form-name" value="first-booking-offer" />
+        <p class="hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+        <label for="offer-email" class="sr-only">Email address</label>
+        <input
+          id="offer-email"
+          type="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="you@company.com"
+          class="rounded-lg border border-[#333] bg-ink px-4 py-3 text-white placeholder:text-muted"
+        />
+        <button type="submit" class="btn bg-red text-white hover:bg-red-bright">Email me the code</button>
+        <p data-offer-error hidden class="text-sm text-red-bright">That didn't send. Check your email address and try again.</p>
+      </form>
+      <p class="text-xs leading-relaxed text-muted">
+        {offer.smallPrint} We'll also send the odd open slot or offer. Unsubscribe any time.{' '}
+        <a href="/privacy" class="underline underline-offset-2 hover:text-white">Privacy policy</a>
+      </p>
+    </div>
+
+    <div data-offer-step="done" hidden class="flex flex-col gap-4">
+      <h2 class="heading-display text-5xl leading-none">Check your <span class="text-red">inbox.</span></h2>
+      <p class="text-sm leading-relaxed text-soft">
+        Your code is on its way. Can't see it in a few minutes? Check spam, or just quote
+        <strong class="text-white">{offer.code}</strong> when you book.
+      </p>
+      <button type="button" data-offer-close class="btn self-start border border-edge text-white hover:border-white">Back to the site</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ delayMs: offer.delaySeconds * 1000 }}>
+  (function () {
+    var KEY = 'kcs-offer-popup';
+    var root = document.getElementById('offer-popup');
+    if (!root) return;
+    var path = location.pathname;
+    if (/^\/(thanks|privacy|404)/.test(path)) return;
+    var seen = null;
+    try { seen = localStorage.getItem(KEY); } catch (e) {}
+    if (seen) return;
+
+    var lastFocus = null;
+    var open = function () {
+      if (!root.hidden || open.done) return;
+      open.done = true;
+      try { localStorage.setItem(KEY, 'shown'); } catch (e) {}
+      lastFocus = document.activeElement;
+      root.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      var input = root.querySelector('#offer-email');
+      if (input && window.matchMedia('(min-width: 640px)').matches) input.focus();
+    };
+    var close = function () {
+      root.hidden = true;
+      document.documentElement.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+
+    var timer = setTimeout(open, delayMs);
+    var onScroll = function () {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      if (max > 0 && scrollY / max > 0.5) {
+        window.removeEventListener('scroll', onScroll);
+        clearTimeout(timer);
+        open();
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    root.addEventListener('click', function (e) {
+      if (e.target === root || e.target.closest('[data-offer-close]')) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !root.hidden) close();
+    });
+
+    var form = root.querySelector('form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type=submit]');
+      var err = form.querySelector('[data-offer-error]');
+      btn.disabled = true;
+      err.hidden = true;
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString(),
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          try { localStorage.setItem(KEY, 'signed-up'); } catch (e2) {}
+          root.querySelector('[data-offer-step=form]').hidden = true;
+          root.querySelector('[data-offer-step=done]').hidden = false;
+        })
+        .catch(function () {
+          btn.disabled = false;
+          err.hidden = false;
+        });
+    });
+  })();
+</script>

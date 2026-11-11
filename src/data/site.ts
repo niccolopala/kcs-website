@@ -56,3 +56,14 @@ export const driveTimes = [
   { from: 'Sevenoaks', time: '35 min' },
   { from: 'Central London', time: '1h 30' },
 ];
+
+// First-booking offer popup (OfferPopup.astro) and the email that sends the code
+// (netlify/functions/submission-created.mjs reads OFFER_CODE / these words from here at build).
+export const offer = {
+  code: 'KCS10',
+  headline: '10% off your',
+  headlineAccent: 'first booking.',
+  body: 'Drop your email and we\'ll send you a code for 10% off your first session in the podcast studio or the infinity room.',
+  smallPrint: 'One use per customer, new customers only.',
+  delaySeconds: 15,
+};
