@@ -11,9 +11,11 @@ interface Props {
   description: string;
   current?: string;
   jsonLd?: Record<string, unknown>;
+  /** Keep this page out of search results (thank-you / confirmation pages). */
+  noindex?: boolean;
 }
 
-const { title, description, current, jsonLd } = Astro.props;
+const { title, description, current, jsonLd, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.jpg', Astro.site);
 ---
@@ -22,6 +24,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
 <html lang="en-GB">
   <head>
     <meta charset="utf-8" />
+    {/* Runs before the Google tag, e.g. to strip personal data from the URL on /booked/. */}
+    <slot name="head-start" />
     {
       site.googleAdsId && (
         <>
@@ -48,6 +52,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#0a0a0a" />
 

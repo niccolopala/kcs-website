@@ -12,6 +12,8 @@ interface Props {
   consent?: string;
   submitLabel?: string;
   tone?: 'dark' | 'light';
+  /** Page the visitor lands on after submitting. */
+  action?: string;
 }
 const {
   name,
@@ -21,6 +23,7 @@ const {
   showBooking = false,
   submitLabel = 'Send',
   tone = 'dark',
+  action = '/thanks',
   consent = "We'll only use your details to reply to your enquiry.",
 } = Astro.props;
 const field =
@@ -30,7 +33,7 @@ const field =
 const labelCls = tone === 'dark' ? 'text-sm font-semibold' : 'text-sm font-semibold text-ink';
 ---
 
-<form name={name} method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company-website" class="flex flex-col gap-4">
+<form name={name} method="POST" action={action} data-netlify="true" netlify-honeypot="company-website" class="flex flex-col gap-4">
   <input type="hidden" name="form-name" value={name} />
   <p class="hidden">
     <label>Leave this empty <input name="company-website" /></label>

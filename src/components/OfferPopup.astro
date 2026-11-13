@@ -1,7 +1,7 @@
 ---
 import { offer } from '../data/site';
 // First-booking offer popup. Shows once per visitor, after a delay or some scrolling,
-// never on the thanks / privacy / 404 pages. Submits to the Netlify form "first-booking-offer"
+// never on the thanks / enquiry-thanks / booked / privacy / 404 pages. Submits to the Netlify form "first-booking-offer"
 // in the background (no page change, so it is NOT counted as an enquiry conversion).
 // The submission-created function emails the visitor their code.
 ---
@@ -73,7 +73,7 @@ import { offer } from '../data/site';
     var root = document.getElementById('offer-popup');
     if (!root) return;
     var path = location.pathname;
-    if (/^\/(thanks|privacy|404)/.test(path)) return;
+    if (/^\/(thanks|enquiry-thanks|booked|privacy|404)/.test(path)) return;
     var seen = null;
     try { seen = localStorage.getItem(KEY); } catch (e) {}
     if (seen) return;

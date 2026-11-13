@@ -1,21 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site';
+// Landing page for the mailing list and Kitchen Studio forms. Fires no Google Ads conversion
+// (enquiries go to /enquiry-thanks/, bookings to /booked/).
 ---
 
-<Base title="Thanks | Kent Content Studios" description="Thanks for getting in touch with Kent Content Studios.">
+<Base title="Thanks | Kent Content Studios" description="Thanks for signing up to Kent Content Studios." noindex>
   <section class="container-kcs flex min-h-[60vh] flex-col items-start justify-center gap-6 py-24">
-    <h1 class="heading-display text-7xl md:text-[96px]">Got it. <span class="text-red">Thanks.</span></h1>
-    <p class="max-w-xl text-lg leading-relaxed text-muted">We'll get back to you within one working day.</p>
+    <h1 class="heading-display text-7xl md:text-[96px]">You're <span class="text-red">in.</span></h1>
+    <p class="max-w-xl text-lg leading-relaxed text-muted">Thanks for signing up. We'll be in touch with open slots, offers and studio news.</p>
     <a href="/" class="btn bg-red text-white hover:bg-red-bright">Back to home</a>
   </section>
 </Base>
-
-<script is:inline define:vars={{ conversion: site.googleAdsEnquiryConversion }}>
-  // Counts an enquiry as a Google Ads conversion, respecting the visitor's cookie choice.
-  (function () {
-    if (!conversion) return;
-    // Consent Mode decides what Google may store; without consent no cookies are used.
-    if (window.gtag) window.gtag('event', 'conversion', { send_to: conversion });
-  })();
-</script>

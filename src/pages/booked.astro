@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+// Cal.com redirects here after a booking ("Redirect on booking" in each event type), e.g.
+// /booked/?type=episode-package&uid=...&attendeeName=...&email=...
+// The head script keeps type + uid, then strips everything else from the URL BEFORE the
+// Google tag reads page_location, so no name or email ever reaches Google.
+---
+
+<Base title="You're booked | Kent Content Studios" description="Your Kent Content Studios booking is confirmed." noindex>
+  <script is:inline slot="head-start">
+    (function () {
+      var p = new URLSearchParams(location.search);
+      window.kcsBooking = { type: p.get('type'), uid: p.get('uid') };
+      var clean = location.pathname + (p.get('type') ? '?type=' + encodeURIComponent(p.get('type')) : '');
+      history.replaceState(null, '', clean);
+    })();
+  </script>
+
+  <section class="container-kcs flex min-h-[60vh] flex-col items-start justify-center gap-6 py-24">
+    <h1 class="heading-display text-7xl md:text-[96px]">You're <span class="text-red">booked.</span></h1>
+    <p class="max-w-xl text-lg leading-relaxed text-muted">
+      Check your email for the confirmation and payment details. Any questions before your session, email
+      <a href={`mailto:${site.email}`} class="text-white underline underline-offset-2">{site.email}</a>.
+    </p>
+    <p class="max-w-xl text-muted">{site.address.line1}, {site.address.line2}, {site.address.town} {site.address.postcode}</p>
+    <a href="/" class="btn bg-red text-white hover:bg-red-bright">Back to home</a>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ conversion: site.googleAdsBookedConversion }}>
+  // Counts a completed Cal.com booking as a Google Ads conversion, once per booking.
+  (function () {
+    var b = window.kcsBooking || {};
+    if (!b.uid || !window.gtag || !conversion) return; // only real Cal.com redirects
+    try {
+      if (localStorage.getItem('kcs-booked-' + b.uid)) return;
+      localStorage.setItem('kcs-booked-' + b.uid, '1');
+    } catch (e) {}
+    // Value = session price in £ ex VAT.
+    var values = {
+      'studio-session': 295, 'episode-package': 595, 'batch-session': 495, 'full-day': 850,
+      'infinity-2hour': 80, 'infinity-room-half-day': 140, 'infinity-room-full-day': 270,
+      'studio-tour': 50
+    };
+    window.gtag('event', 'conversion', {
+      send_to: conversion,
+      value: values[b.type] || 150,
+      currency: 'GBP',
+      transaction_id: b.uid
+    });
+  })();
+</script>
