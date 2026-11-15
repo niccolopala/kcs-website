@@ -33,6 +33,18 @@ export const site = {
 // Cal.com booking links for the Podcast Studio and Infinity Room. Company bookings needing an invoice use the enquiry form.
 // If a link's URL slug changes in Cal.com, update it here and it updates everywhere on the site.
 const cal = 'https://cal.com/kentcontentstudios';
+
+// Session value in £ ex VAT, by Cal.com event slug. Sent with the "Booking confirmed" conversion.
+export const bookingValues: Record<string, number> = {
+  'studio-session': 295,
+  'episode-package': 595,
+  'batch-session': 495,
+  'full-day': 850,
+  'infinity-2hour': 80,
+  'infinity-room-half-day': 140,
+  'infinity-room-full-day': 270,
+  'studio-tour': 50,
+};
 export const calLinks = {
   episodePackage: `${cal}/episode-package`,
   studioSession: `${cal}/studio-session`,

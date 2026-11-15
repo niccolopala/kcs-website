@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site';
+import { site, bookingValues } from '../data/site';
+// Only used if Cal.com "Redirect on booking" is switched on (paid Teams plan). On the free plan
+// bookings are tracked by the Cal.com popup instead (CalEmbed.astro).
 // Cal.com redirects here after a booking ("Redirect on booking" in each event type), e.g.
 // /booked/?type=episode-package&uid=...&attendeeName=...&email=...
 // The head script keeps type + uid, then strips everything else from the URL BEFORE the
@@ -28,7 +30,7 @@ import { site } from '../data/site';
   </section>
 </Base>
 
-<script is:inline define:vars={{ conversion: site.googleAdsBookedConversion }}>
+<script is:inline define:vars={{ conversion: site.googleAdsBookedConversion, values: bookingValues }}>
   // Counts a completed Cal.com booking as a Google Ads conversion, once per booking.
   (function () {
     var b = window.kcsBooking || {};
@@ -37,12 +39,6 @@ import { site } from '../data/site';
       if (localStorage.getItem('kcs-booked-' + b.uid)) return;
       localStorage.setItem('kcs-booked-' + b.uid, '1');
     } catch (e) {}
-    // Value = session price in £ ex VAT.
-    var values = {
-      'studio-session': 295, 'episode-package': 595, 'batch-session': 495, 'full-day': 850,
-      'infinity-2hour': 80, 'infinity-room-half-day': 140, 'infinity-room-full-day': 270,
-      'studio-tour': 50
-    };
     window.gtag('event', 'conversion', {
       send_to: conversion,
       value: values[b.type] || 150,

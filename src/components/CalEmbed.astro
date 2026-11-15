@@ -1,0 +1,116 @@
+---
+import { site, bookingValues } from '../data/site';
+// Opens every https://cal.com/kentcontentstudios/... link in Cal.com's booking popup on this site,
+// so Google Ads can see completed bookings without Cal.com's paid "Redirect on booking".
+//
+//  - Click on a Book link     → "Booking click" conversion (as before) + popup opens.
+//  - Booking completed        → "Booking confirmed" conversion, valued by event slug, once per booking uid.
+//  - Popup script failed / modifier-click / new tab → falls back to opening cal.com normally.
+---
+
+<script
+  is:inline
+  define:vars={{
+    clickConversion: site.googleAdsBookingConversion,
+    bookedConversion: site.googleAdsBookedConversion,
+    values: bookingValues,
+  }}
+>
+  (function () {
+    var NS = 'kcs';
+    var LINK = /^https:\/\/cal\.com\/(kentcontentstudios\/[\w-]+)/;
+    var embedFailed = false;
+    var lastSlug = null;
+
+    // Cal.com's official loader (defines window.Cal and loads embed.js once).
+    (function (C, A, L) {
+      var p = function (a, ar) { a.q.push(ar); };
+      var d = C.document;
+      C.Cal = C.Cal || function () {
+        var cal = C.Cal;
+        var ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          var s = d.createElement('script');
+          s.src = A;
+          s.async = true;
+          s.onerror = function () { embedFailed = true; };
+          d.head.appendChild(s);
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          var api = function () { p(api, arguments); };
+          var namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === 'string') {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ['initNamespace', namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+
+    var start = function () {
+      if (start.done) return;
+      start.done = true;
+      Cal('init', NS, { origin: 'https://cal.com' });
+      Cal.ns[NS]('ui', {
+        theme: 'dark',
+        cssVarsPerTheme: { dark: { 'cal-brand': '#C0281E' } },
+        hideEventTypeDetails: false,
+        layout: 'month_view',
+      });
+      Cal.ns[NS]('on', { action: 'linkFailed', callback: function () { embedFailed = true; } });
+      Cal.ns[NS]('on', {
+        action: 'bookingSuccessfulV2',
+        callback: function (e) {
+          var data = (e && e.detail && e.detail.data) || {};
+          if (!data.uid || !window.gtag || !bookedConversion) return;
+          try {
+            if (localStorage.getItem('kcs-booked-' + data.uid)) return;
+            localStorage.setItem('kcs-booked-' + data.uid, '1');
+          } catch (err) {}
+          window.gtag('event', 'conversion', {
+            send_to: bookedConversion,
+            value: values[lastSlug] || 150,
+            currency: 'GBP',
+            transaction_id: data.uid,
+          });
+        },
+      });
+    };
+    // Load the popup script once the page is idle, so it doesn't slow the first paint.
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 3000 });
+    else setTimeout(start, 1500);
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      var m = a && a.href.match(LINK);
+      if (!m) return;
+      var newTab = e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank';
+      var fire = function (cb) {
+        if (window.gtag && clickConversion) {
+          window.gtag('event', 'conversion', { send_to: clickConversion, transport_type: 'beacon', event_callback: cb });
+        } else if (cb) cb();
+      };
+      if (newTab) return fire();
+
+      e.preventDefault();
+      if (!embedFailed) {
+        start();
+        lastSlug = m[1].split('/')[1];
+        fire();
+        Cal.ns[NS]('modal', { calLink: m[1], config: { layout: 'month_view', theme: 'dark' } });
+        return;
+      }
+      // Fallback: popup unavailable, go to cal.com (wait briefly so the click is counted).
+      var go = function () { if (!go.done) { go.done = true; window.location.href = a.href; } };
+      fire(go);
+      setTimeout(go, 400);
+    });
+  })();
+</script>
